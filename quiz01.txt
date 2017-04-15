@@ -1,0 +1,16 @@
+1.  The Go programming language is dynamically typed like JavaScript
+and Python, or statically typed like Java and C++.
+    A.  Like JS and Python
+    B.  Like Java and C++
+
+2.  Arrays in Java are bounds-checked, but arrays in C++ are not.  The
+Go language does array bounds checking.
+    A.  True
+    B.  False
+
+3.  Java guarantess that variables are initialized to zero, C++ does not.  The
+Go language guarantees that all variables are initialized to zero.
+    A.  True
+    B.  False
+
+4.  
