@@ -1,24 +1,25 @@
 # vi:set tw=0:
 Introduction to Go
-Women Who Go Tokyo
-10 Dec 2016
+Cisco
+24 Apr 2017
 
-Dave Cheney
-dave@cheney.net
-http://dave.cheney.net/
-@davecheney
+Frank Edwards
+support@eeconsulting.net
+http://www.eeconsulting.net/
 
 * License and Materials
 
+[[https://github.com/davecheney/introduction-to-go][Heavily derived from Dave Cheney's free tutorial]]
+
+This is his license information:
+
 This presentation is licensed under the [[https://creativecommons.org/licenses/by-sa/4.0/][Creative Commons Attribution-ShareAlike 4.0 International]] licence.
-
-The materials for this presentation are available on GitHub:
-
-.link https://github.com/davecheney/introduction-to-go
 
 You are encouraged to remix, transform, or build upon the material, providing you give appropriate credit and distribute your contributions under the same license.
 
 If you have suggestions or corrections to this presentation, please raise [[https://github.com/davecheney/introduction-to-go/isues][an issue on the GitHub project]].
+
+(Note: Since I have modified this presentation, it may be best to report them to me.  I will make changes to my fork and then submit a pull request to him.)
 
 * Agenda
 
@@ -48,6 +49,8 @@ As we work through the day there will be less of me talking, and more exercises 
 Designed by programmers for programmers!
 
 .link https://talks.golang.org/2014/taste.slide#2 Source: Robert Griesemer, A Taste of Go.
+
+.link https://golang.org/doc/go1compat Backward compatibility statement
 
 * Speed
 
@@ -772,7 +775,7 @@ When you convert a variable with a _smaller_ number of bits to a variable with a
 When you convert a variable with a _larger_ number of bits to a variable with a smaller number of bits there is a risk of truncation, because there are less bits available to represent your number.
 
 - Follow [[https://play.golang.org/p/NbNwRjbmRu][this link]] and press the *Run* button. Does it print the answer you expected?
-- Fix the program by reducing the value of `x`. Hint: the value needs to be less than 33,000.
+- Fix the program by reducing the value of `x`. Hint: the value needs to be less than or equal to 32,767 (that's the largest value that can fit in a 16-bit signed integer).
 - Press the *Run* button and confirm the program now prints `y` correctly.
 
 * Short declaration syntax
@@ -791,7 +794,7 @@ This is what we call a _short_declaration_, which is the same as
  
  var x int = 0
 
-Short declaration is very common in Go programs, you'll see it everywhere, so let's do some exercises to familarize you with its use.
+Short declaration is very common in Go programs -- you'll see it everywhere. Let's do some exercises to familarize you with its use.
 
 * Short declaration syntax (cont.)
 
@@ -802,7 +805,7 @@ A common use of the short declaration syntax is in `for` loops. Consider this pr
          fmt.Println(i)
  }
 
-This can be also written as
+This can also be written as
 
  for i := 1; i < 11; i++ {
          fmt.Println(i)
@@ -815,7 +818,7 @@ This can be also written as
 
 * Slices
 
-The next kind of type to discuss is the _Slice_. 
+The next kind of type to discuss is the _slice_. 
 
 A slice is an ordered collection of values of a _single_ type.
 
@@ -837,7 +840,7 @@ _Note_: A slice is _not_ an array. Go also supports arrays, but you'll see later
 
 If I declare a slice, `[]int`, how many items can it hold?
 
-The _zero_value_ of a slice is empty, that is, it has a _length_ of zero; it can hold 0 items.
+The _zero_value_ of a slice is empty; that is, it has a _length_ of zero; it holds 0 items.
 
 .code -edit src/slices/slices1/main.go
 
@@ -852,7 +855,7 @@ We can create a slice with space to hold items using the built-in `make` functio
 
 .code -edit src/slices/slices2/main.go
 
-In this example, on the first line `var i []int` declares `i` to be a slice of `int`.
+In this example, on the first line `var`i`[]int` declares `i` to be a slice of `int`.
 
 On the second line, `i` is _assigned_ the result of `make([]int,`20)`.
 
@@ -861,7 +864,7 @@ On the second line, `i` is _assigned_ the result of `make([]int,`20)`.
 
 * Making a slice (cont.)
 
-Because declaring a slice variable and initalising it with `make` is a common operation, it is common to see the _short_variable_declaration_ used to combine this operations.
+Because declaring a slice variable and initalizing it with `make` is a common operation, it is common to see the _short_variable_declaration_ used to combine this operations.
 
 .code -edit src/slices/slices3/main.go
 
@@ -872,7 +875,7 @@ This example declares `i` _and_ initalizes it to be a slice of `int` with a leng
 
 * Slice exercises
 
-Let's do a quick exercise to familarize yourself with using slices.
+Now do a quick exercise to familarize yourself with using slices.
 
 .code -edit src/slices/slices4/main.go
 
@@ -886,19 +889,19 @@ Let's do a quick exercise to familarize yourself with using slices.
 
 To access, or assign, the contents of a slice element at index `i`, use the form `s[i]`.
 
-Slices are zero indexed, so `s[0]` is the 1st element, `s[1]` is the second element, and so on.
+Slices are zero indexed, so `s[0]` is the first element, `s[1]` is the second element, and so on.
 
 When the _index_expression_ appears on the _left_hand_side_ of the equals operator, `=`
 
  s[7] = 20
 
-We are assigning the number 20 to the 8'th element of the slice `s`.
+We are assigning the number 20 to the eighth element of the slice `s`.
 
 When the _index_expression_ appears on the _right_hand_side_ of the equals operator, `=`
 
  x := s[7]
 
-We are assigning the value at the 8th element of `s` to the variable `x`.
+We are assigning the value at the eighth element of `s` to the variable `x`.
 
 * Slice zero value
 
@@ -906,30 +909,30 @@ We saw earlier that the _zero_value_ of the slice
 
  var s []int
 
-was and empty slice, a slice with length of zero.
+was an empty slice; a slice with length of zero.
 
-What is the value of each of the elements of a newly created, with make, slice?
+What is the value of each of the elements of a newly created (with `make`) slice?
 
-.play -edit src/slices/slices5/main.go
+.code -edit src/slices/slices5/main.go
 
 - Follow [[https://play.golang.org/p/kGh_C1l6KW][this link]] and press the *Run* button.
 - Did the program print the result you expected?
 
-* Slice initialisation
+* Slice initialization
 
 We want to create an `[]int` slice of the first 10 prime numbers, how could we do this?
 
 One solution could be to create the slice and assign a value to each element in the slice.
 
-.play -edit src/slices/slices6/main.go
+.code -edit src/slices/slices6/main.go
 
-* Slice initialisation (cont.)
+* Slice initialization (cont.)
 
 Doing this manually is verbose and boring; how would you do this for the first 50 primes?
 
 Go supports a method of assignment where we both _declare_ and _initalize_ the slice at once.
 
-.play -edit src/slices/slices7/main.go
+.code -edit src/slices/slices7/main.go
 
 This is called the _composite_literal_ syntax.
 
@@ -939,7 +942,9 @@ This is called the _composite_literal_ syntax.
 
 So far we've been using slices with a known length. You can extend the contents of a slice with the built-in `append` function.
 
-.play -edit src/slices/slices8/main.go
+.code -edit src/slices/slices8/main.go
+
+* append (cont.)
 
 `append` increases the length of the slice to accommodate the new items, then returns a new slice value.
 
@@ -949,15 +954,13 @@ You can `append` multiple values in one statement, providing they are all the sa
 
 * Subslices
 
-What if we have a large slice, and want to refer to only a part of it. 
+What if we have a large slice and want to refer to only a part of it?  We call this _slicing_a_slice_, or _subslicing_.
 
-We call this slicing a slice, or _subslicing_.
+Subslicing looks similar to the _indexing_ operation we saw a few slides ago, except it refers to a range of slice indexes.
 
-Subslicing looks similar to the _indexing_ operation we saw a few slide ago, except it refers to a range of slice indexes.
+.code -edit src/slices/slices12/main.go
 
-.play -edit src/slices/slices12/main.go
-
-The expression `brothers[0:3]` evaluates to a slice of the 1st to 3rd Marx brother.
+The expression `brothers[0:3]` returns a slice starting at element 0, up to but not including, element 3.  (In mathematics, it would be denoted `[0,3)`.)
 
 - Follow [[https://play.golang.org/p/d1-jl42aTF][this link]] and complete the exercise.
 
@@ -977,7 +980,7 @@ You can increase the length of the slice with the `append` function, and create 
 
 What happens if you accidentally exceed the bounds of the slice?
 
-.play -edit src/slices/slices11/main.go
+.code -edit src/slices/slices11/main.go
 
 - Follow [[https://play.golang.org/p/mIWm0a1amp][this link]] and press the *Run* button.
 - Comment out `fmt.Println(primes[-1])` and see what happens.
@@ -986,7 +989,7 @@ What happens if you accidentally exceed the bounds of the slice?
 
 Go allows you to perform multiple assignments and declarations in one statement.
 
-For example, if we wanted to declare, `x`, `y`, and `z`, with the values `1`, `2`, and `3` respectively. We could write
+For example, if we wanted to declare, `x`, `y`, and `z`, with the values `1`, `2`, and `3`, respectively, we could write
 
  var x = 1
  var y = 2
@@ -1008,11 +1011,11 @@ This is a function declaration for `f` which takes one argument, an `int`.
 
  func g(i int, j int, k string) int
 
-This is a function declaration for `g`, which takes three arguments, two `int` s and a `string`, and returns an `int`.
+This is a function declaration for `g`, which takes three arguments: an `int`, an `int`, and a `string`, and returns an `int`.
 
  func h(i, j int) (int, int, string)
 
-This is a function declaration for `h`, which takes two arguments, two `ints`, and returns three values, two `int` s and a `string`.
+This is a function declaration for `h`, which takes two arguments, both `int`, and returns three values, an `int`, an `int`, and a `string`.
 
 * Multiple return values (cont.)
 
@@ -1044,13 +1047,16 @@ If we wanted to use only the first and third values we can ignore the second by 
 
 Go has a built in Hash Map type, called a `map`.
 
-Maps map values of key type K to values of type V
+Maps map values of type K (called the _key_) to values of type V (called the _value_).
 
+ // The key is a string, the value is an int
  var m map[string]int
 
 Just like making a slice, making a map is accomplished with the `make` built-in.
 
 .play -edit src/maps/maps1/main.go
+
+_Note_: Maps are always _unordered_.
 
 * Inserting values into a map
 
@@ -1058,23 +1064,23 @@ Inserting a value into a map looks similar to assigning a value to a slice eleme
 
 .play -edit src/maps/maps2/main.go
 
-If an entry already exits with that key, it will be overwritten.
+If an entry already exists with that key, it will be overwritten.
 
 - Follow [[https://play.golang.org/p/a-V5I0nZ5l][this link]] and complete the exercise.
 
-_Note_: Maps are always _unordered_.
+_Note_: Using `int` with sequential keys is not very useful (slices would likely be better).
 
-* Compact literal initalisation
+* Compact literal initialization
 
-Just like slices, maps support compact literal initalisation, which declares and initalizes the map.
+Just like slices, maps support compact literal initialization, which declares and initializes the map.
 
 .play -edit src/maps/maps3/main.go
 
-* Retrieving a values from a map
+* Retrieving a value from a map
 
 Just like a slice, you can retrieve the value stored in a map with the syntax `m[key]`.
 
-If it is present the value will be returned, if not the _zero_value_ will be returned.
+If it is present, the value will be returned; if not present, the _zero_value_ will be returned.
 
 .play -edit src/maps/maps4/main.go
 
@@ -1104,12 +1110,12 @@ If we wanted to print out all the values in a map we can use a form of the `for`
 
 * Range over slices
 
-We say previously that `for`range` works with maps, it also works with slices.
+We said previously that `for`range` works with maps; it also works with slices.
 
 .play -edit src/range/range2/main.go
 
 - Follow [[https://play.golang.org/p/AmQW-OrPC1][this link]] and complete the exercise.
-- If you cannot figure it out, don't worry, there is an answer on the next slide.
+- If you cannot figure it out, don't worry -- there is an answer on the next slide.  But *don't*peek!*
 
 * Switch
 
@@ -1123,7 +1129,7 @@ Instead we can use the other condition statement, `switch`.
 
 * Switch (cont.)
 
-`switch` can be used 
+`switch` can be used like this
 
 .play -edit src/switch/switch1/main.go /START OMIT/,/END OMIT/
 
@@ -1131,15 +1137,15 @@ Instead we can use the other condition statement, `switch`.
 
 Let's conclude this section by talking about the fmt package.
 
-`fmt` standard for formatted printing; the name is inherited from Go's Plan 9 legacy.
+`fmt` -- the standard for formatted printing; the name is inherited from Go's Plan 9 legacy.
 
 We've use `fmt.Println` a lot up to this point, but the `fmt` package has many other useful functions.
 
-We'll focus on `fmt.Printf`, the `f` stands for _formatted_output_.
+We'll focus on `fmt.Printf`, the `f` stands for _formatted_.
 
 Here is an example.
 
-.play -edit src/fmt/fmt1/main.go /START OMIT/,/END OMIT/
+.code -edit src/fmt/fmt1/main.go /START OMIT/,/END OMIT/
 
 - Follow [[https://play.golang.org/p/UuzPWcwDrE][this link]] to experiment.
 
@@ -1147,7 +1153,7 @@ Here is an example.
 
 If you're used to languages like Python or C, you're probably used to the idea of _formatting_verbs_.
 
-The `fmt` package supports a large number of formatting verbs and modifiers. In the previous example you saw `%s` and `%d`, for `string` and `int` respectively.
+The `fmt` package supports a large number of formatting verbs and modifiers. In the previous example you saw `%s` and `%d`, for string and decimal (`int`), respectively.
 
 The `fmt` package is smart enough to spot when you use the wrong formatting verb, or don't provide enough arguments to `fmt.Printf`.
 
@@ -1155,13 +1161,14 @@ The `fmt` package is smart enough to spot when you use the wrong formatting verb
 
 * Formatting verbs (cont.)
 
-Having to choose the correct verb that matches the type of the value you want to print is boring.
+Having to choose the correct verb that matches the type of the value you want to print is boring.  (And what is boring, is tedious.  And what is tedious is error-prone.)
 
 To make it easier to use `fmt.Printf` in the simple case, you can use the `%v` verb, which know how to print _any_ value.
 
 .play -edit src/fmt/fmt3/main.go /START OMIT/,/END OMIT/
 
 - Follow [[https://play.golang.org/p/B-E7JOJ1Db][this link]] to experiment with a few more formatting verbs.
+- Using `%T` as a formatting verb prints the _type_ of the value, not its content.
 
 * Recap
 
@@ -1170,26 +1177,26 @@ Now you know most of Go!
 You've learnt:
 
 - How Go code is formatted.
-- How what the zero value is and how it works.
-- Equality and type conversions
-- The short declaration syntax
+- What the zero value is and how it works.
+- Equality and type conversions.
+- The short declaration syntax.
 - Multiple assignment.
 - How slices work.
 - How maps work.
 - How the `fmt` package works.
 
-Time for lunch!
+* 3. Development environment and tooling
 
 * Development environment and tooling
 
-* Development environment and tooling
-
-This section focuses on the developer experience
+This section focuses on the developer experience.
 
 - Installing Go.
 - Setting up a `$GOPATH` workspace.
 - Introduction to the `go` command.
-- Writing unit tests with the go test command.
+- Writing unit tests with the `go`test` command.
+
+Students in this class should already have accomplished this, but we document it here for those students who were not responsible for configuring their own environment.
 
 * Installing Go
 
@@ -1199,7 +1206,7 @@ The official installation documentation is here:
 
 .link https://golang.org/doc/install
 
-The current version of Go is 1.7.4.
+The current version of Go is 1.8.1.
 
 - New minor releases, Go 1.8, Go 1.9, etc, ship twice a year. 
 - Historically 2–4 bug fix or security releases occur during each six month period.
@@ -1212,7 +1219,7 @@ Installing Go on OS X (also known as `darwin`) can be accomplished with
 
 The Go project provides an `.pkg` installer, use:
 
-.link https://storage.googleapis.com/golang/go1.7.4.darwin-amd64.pkg
+.link https://storage.googleapis.com/golang/go1.8.1.darwin-amd64.pkg
 
 *Homebrew*
 
@@ -1222,9 +1229,10 @@ If you use Homebrew to manage third party software on your Mac, use:
 
 *MacPorts*
 
-If you use MacPorts to manage third party software on your Mac, use:
+If you use MacPorts or Fink to manage third party software on your Mac, use:
 
  sudo port install go
+ sudo fink install go
 
 * Installing Go on Windows
 
@@ -1232,15 +1240,15 @@ If you use MacPorts to manage third party software on your Mac, use:
 
 The Go project provides a `.msi` installer for 32bit and 64bit Windows, use:
 
-.link https://storage.googleapis.com/golang/go1.7.4.windows-amd64.msi Windows 64bit MSI installer
-.link https://storage.googleapis.com/golang/go1.7.4.windows-386.msi Windows 32bit MSI installer
+.link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.msi Windows 64bit MSI installer
+.link https://storage.googleapis.com/golang/go1.8.1.windows-386.msi Windows 32bit MSI installer
 
 *.zip*file*
 
 The Go project provides a `.zip` file of the Go compiler and standard library, use:
 
-.link https://storage.googleapis.com/golang/go1.7.4.windows-amd64.zip Windows 64bit zip file
-.link https://storage.googleapis.com/golang/go1.7.4.windows-386.zip Windows 32bit zip file
+.link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.zip Windows 64bit zip file
+.link https://storage.googleapis.com/golang/go1.8.1.windows-386.zip Windows 32bit zip file
 
 Unzip the zip file and place it at `C:\Go`.
 
@@ -1248,9 +1256,9 @@ Unzip the zip file and place it at `C:\Go`.
 
 Depending on your Linux distribution they may have an up to date version of Go, but this is rare.
 
-The most reliable way to install the latest version of Go is to untar
+The most reliable way to install the latest (64bit) version of Go is to untar
 
-.link https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
+.link https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz
 
 to the directory
 
@@ -1277,7 +1285,7 @@ The `go` tool can
 
 * $GOPATH
 
-The `go` tool works inside a workspace where _all_ your Go source code is stored.
+The `go` tool works inside a workspace where _all_ of your Go source code is stored.
 
 All the source code for this workshop is included with this repository.
 
