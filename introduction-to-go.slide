@@ -1,3 +1,4 @@
+# vi:set tw=0:
 Introduction to Go
 Women Who Go Tokyo
 10 Dec 2016
@@ -112,7 +113,7 @@ Go is an opinionated language.
 
 .play -edit src/hellohttp/hellohttp.go
 
-* Basic Syntax
+* 1. Basic Syntax
 
 * Basic Syntax 
 
@@ -239,11 +240,11 @@ You _declare_ a new variable with the `var` declaration.
 
 .play -edit src/variable/variable1/main.go /START OMIT/,/END OMIT/
 
-Just like constants, variable _identifiers_ can be any any valid Unicode word.
+Just like constants, variable _identifiers_ can be any valid Unicode word.
 
 - Press the *Run* button to see the result.
 
-_note_: The circumference is printed in scientific notation 😕, that's ok, we'll talk about how to fix it later when we talk about the `fmt` package.
+_Note_: The circumference is printed in scientific notation 😕, that's ok, we'll talk about how to fix it later when we talk about the `fmt` package.
 
 * Unused variable declarations
 
@@ -265,24 +266,25 @@ A _statement_ is a command to do something:
 
 - _Declare_a_new_integer_variable_x_and_assign_it_the_value_10_.
 - _Add_4_to_the_value_of_x_and_store_the_result_in_y_.
-- _While_x_less_than_20_perform_these_statements_.
+- _While_x_is_less_than_20,_perform_these_statements_.
 
-There are several kinds of statements in Go, we've seen a few already. The most common statements are:
+There are several kinds of statements in Go; we've seen a few already. The most common statements are:
 
 - Declarations: `const`pi`=`3.14159265359`, `type`Counter`int32`, …
 - Assignments: `count`=`count`+`1`, …
 - Increment/Decrement: `x++`, `y--`
 - Conditionals: `if`…`{`…`}`else`{`…`}`, `switch`{`…`}`
 - Loops: `for`…`{`…`}`
-- Control flow: `break`, `fallthrough`, `continue`, `goto`, `return`.
+- Control flow: `break`, `fallthrough`, `continue`, `goto` (!), `return`.
 
 * Assignment
 
-It is common that you need to change the value stored in a variable, this is called _Assignment_.
+It is common that you need to change the value stored in a variable, this is called _assignment_.
 
 .play -edit src/assignment/assignment1/main.go /START OMIT/,/END OMIT/
 
-In this example, we declare
+In this example, we declare `x` and assign the value of `1`, then assign
+a new value of `2` later.
 
 - Press *Run* to check that program prints, `1`, `2`, `4`.
 # - Update the program to declare a new variable, `z`, which has a value 2x larger than `y`.
@@ -297,46 +299,46 @@ It is a syntax error to assign a new value to a constant.
 
 - Press *Run* and see the program does not compile.
 - Edit the sample code to change the declaration of `x` from a constant (`const`) to a variable (`var`).
-- Press *Run* and check the program compiles and prints the correct answer, 2.
+- Press *Run* and check that the program compiles and prints the correct answer, `2`.
 
 * Increment and decrement
 
-Go supports a limited form of variable post-increment and post-decrement, ie. `x++`, `x--`.
+Go supports a limited form of variable post-increment and post-decrement, i.e., `x++` and `x--`.
 
 .play -edit src/increment/increment1/main.go /START OMIT/,/END OMIT/
 
-- Press *Run* and see the program prints `2`,
+- Press *Run* and see the program prints `2`.
 - Edit the sample code to subtract `1` from `i` using the decrement operator `i--`.
-- Press *Run* and check the program compiles and prints the correct answer, 0.
+- Press *Run* and check that the program compiles and prints the correct answer, `0`.
 
 * Increment and decrement (cont.)
 
-`i++` and `i--` are _statements_, not an _expressions_, they do not produce a value.
+`i++` and `i--` are _statements_, not _expressions_; they do not produce a value.
 
 .play -edit src/increment/increment2/main.go /START OMIT/,/END OMIT/
 
 This program has a syntax error. 
 
-- Edit the sample code to correct the error by moving the `i++` statement above the declaration of `var`j`.
-- Press *Run* and check the program compiles and prints the correct answer, 2, 2.
+- Edit the sample code to correct the error by moving the `i++` statement above the declaration of `var`j`, and assigning `i` to `j`.
+- Press *Run* and check that the program compiles and prints the correct answer, `2 2`.
 
 * Looping
 
-Go has a single `for` loop construct that combines
+Go has a single `for` loop construct that combines these three styles into one syntax:
 
 - `while` _condition_ `{`…`}`
 - `do`{`…`}`while` _condition_
 - `do`{`…`}`until` _condition_
 
-into one syntax.
+* Syntax
 
-- `for` _(init_statement)_; _condition_; _(post_statement)_ `{`…`}`
+- `for` [ _init_statement_ `;`] _condition_ [`;` _post_statement_ ] `{`…`}`
 
 The parts of a `for` statement are:
 
-- init statement: used to initalise the loop variable; `i`=`0`.
-- condition: user to test if the loop is done; `i`<`10`, `true` means keep looping.
-- post statement: user to increment the loop variable; `i++`, `i`=`i`-`1`.
+- _init_statement_: used to initalize the loop variable; `i`=`0`.
+- _condition_: used to test if the loop is done; `i`<`10`, *true* means keep looping.
+- _post_statement_: used to increment the loop variable; `i++` or `i--` are common.
 
 * Looping (cont.) 
 
@@ -344,31 +346,31 @@ Let's practice using loops.
 
 .play -edit src/loops/loops1/main.go /START OMIT/,/END OMIT/
 
-This program counts from `1` to `10`, can you make it print only the _even_ numbers.
+This program counts from `1` to `10`.  Can you make it print only the _even_ numbers?
 
-- Edit the program to make it print only the even numbers between `1` and `10`, inclusive.
-- Press *Run* and check the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, `10`.
+- Edit the program to make it print only the even numbers between `1` and `10`, inclusive.  (No `if` statements because we haven't learned that yet!)
+- Press *Run* and check that the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, and `10`.
 
-_note_: you do not need to put `(` braces around the `for` condition `)`. In fact, if you do it's a syntax error. Try it.
+_Note_: You do not need to put parentheses around the `for` condition. In fact, if you do it's a syntax error. Try it!
 
 * Looping (cont.) 
 
-Let's practice counting down, this is where you would use a `while` loop in other languages.
+Let's practice counting down. This is where you would use a `while` loop in other languages.
 
 .play -edit src/loops/loops2/main.go /START OMIT/,/END OMIT/
 
 This program counts down from `10` to `1`, can you make it count from `7` to `3`.
 
-- Edit the program to make it print only the numbers from `7` down to `3`.
-- Press *Run* and check the program compiles and prints the correct answer, `7`, `6`, `5`, `4`, `3`.
+- Edit the program to make it print only the numbers from `7` down to `3`, inclusive.
+- Press *Run* and check that the program compiles and prints the correct answer, `7`, `6`, `5`, `4`, and `3`.
 
-_note_: this `for` loop only has a _condition_, there is no _init_statement_ or _post_statement_, so we can omit the semicolons, `;`.
+_Note_: This `for` loop only has a _condition_. There is no _init_statement_ or _post_statement_, so we can omit the semicolons ("`;`").
 
 * Conditional statements
 
 Go has two conditional statements, `if` and `switch`.
 
-`if` is used to choose between two choices based on a _condition_.
+`if` is used to choose between true and false branches based on a _condition_.
 
  if v > 0 {
          println("v is greater than zero")
@@ -376,7 +378,7 @@ Go has two conditional statements, `if` and `switch`.
          println("v is less than or equal to zero")
  }
 
-In some cases the body of the `else` block may be omitted. This is very common when checking preconditions in a method of a function.
+The body of the `else` block may be omitted. This is very common when checking preconditions of a function.
 
  if v == 0 {
          // nothing to do
@@ -384,46 +386,46 @@ In some cases the body of the `else` block may be omitted. This is very common w
  }
  // handle v
 
-* if
+* The if statement
 
 Let's revisit our previous even numbers `for` loop example.
 
 .play -edit src/conditionals/conditionals1/main.go /START OMIT/,/END OMIT/
 
-This program counts from `1` to `10`, can you make it print only the _even_ numbers.
+This program counts from `1` to `10`. Can you make it print only the _even_ numbers?
 
 - Uncomment the `if`i%2`==`0`{` and `}` lines to make the program print only the even numbers between `1` and `10`.
-- Press *Run* and check the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, `10`.
+- Press *Run* and check that the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, and `10`.
 
-_note_: `%` is the _modulo_ operator in Go. All even numbers divide wholly by `2`, leaving `0` as their _modulo_ (or remainder).
+_Note_: `%` is the _modulo_ operator in Go. All even numbers divide wholly by `2`, leaving `0` as their _modulo_ (or remainder).
 
-* continue
+* The continue statement
 
 Unlike languages like Java, `if` statements in Go are often used as _guard_clauses_.
 
 We say that when everything is true the code reads from the top to the bottom of the page.
 
-We can rewrite the previous program using a new statement, `continue`, which _skips_ the body of the loop.
+We can rewrite the previous program using a new statement, `continue`, which _skips_ the remainder of the body of the loop.
 
 .play -edit src/conditionals/conditionals2/main.go /START OMIT/,/END OMIT/
 
 - Uncomment the `if`i%1`==`1`{`, `continue`, and `}` lines.
-- Press *Run* and check the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, `10`.
+- Press *Run* and check that the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, and `10`.
 
-* break
+* The break statement
 
-This program is an _infinite_loop_. There is no _condition_expression_ in the `for` loop.
+The program below is an _infinite_loop_. There is no _condition_ in the `for` loop so it executes forever!
 
-We can use the `break` statement, which breaks out of the _current_ loop, to fix it.
+We can use the `break` statement, which breaks out of the _current_ loop, to terminate it.
 
 .play -edit src/conditionals/conditionals3/main.go /START OMIT/,/END OMIT/
 
 - Uncomment the `if`i`>`10`{`, `break`, and `}` lines.
-- Press *Run* and check the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, `10`.
+- Press *Run* and check that the program compiles and prints the correct answer, `2`, `4`, `6`, `8`, and `10`.
 
 * Type inference
 
-In the examples so far we've avoided talking about types, this is because Go supports _type_inference_.
+In the examples so far we've avoided talking about types. This is because Go supports _type_inference_.
 
 Type inference lets you omit the type of a variable during declaration.
 
@@ -431,13 +433,13 @@ For example:
 
  var i = 7
 
-Go sees that `i` is being declared and initalised with the value `7`, so the compiler infers the type of `i` is an `int`.
+Go sees that `i` is being declared and initalized with the value `7`, so the compiler _infers_ the type of `i` is an `int`.
 
 However if we did
 
  var s = "seven"
 
-Go sees that `s` is being initalised with the _string_ `"seven"`, so the compiler infers the type of `s` is a `string`.
+Go sees that `s` is being initalized with the _string_ `"seven"`, so the compiler infers the type of `s` is a `string`.
 
 * Explicit type declaration
 
@@ -451,6 +453,8 @@ You do this when you declare a variable:
 Which tells the compiler that you are declaring `i` explicitly to be an `int` with the value `7`, and `s` to be a `string` with the value `"おはようございます"`
 
 We'll talk about the kinds of types that Go supports on the next slide.
+
+_Note_: The type name appears _after_ the variable name, unlike many other programming languages.
 
 * Types
 
@@ -478,25 +482,23 @@ Strings may be _concatenated_ with the `+` operator.
 
 - Press *Run* to see the result.
 
-_note_: In Go an empty string is `""`, not `null` or `nil`.
+_Note_: In Go an empty string is `""`, not `NULL`, or `null`, or `nil`.
 
 * Integer types
 
-Integer types are the second most common in Go.
+Integer types are the second most common type in Go.
 
-Integer types come in two types; _signed_ and _unsigned_.
+Integer types come in two varieties; _signed_ and _unsigned_.
 
-Integer types also come in several sizes, represented by the number of bits they represent;
+Integer types also come in several sizes, represented by the number of bits they represent.
 
 - Signed integers: `int8`, `int16`, `int32`, `int64`.
 - Unsigned integers: `uint8`, `uint16`, `uint32`, `uint64`.
 
-Go has two integer types
+Go has two integer types whose size depends on the platform you used to build your Go program:
 
 - `int`, alias for `int32` or `int64` depending on platform.
 - `uint`, alias for `uint32` or `uint64` depending on platform.
-
-whose size depends on the platform you used to build your Go program.
 
 * Integer types (cont.)
 
@@ -510,21 +512,21 @@ This program contains two type errors.
 
 - Press *Run* to discover the two type errors.
 - Fix the program by changing the declared types of `x` and `y`.
-- Press *Run* and check the program compiles and prints the correct answer, `400`, `-7`
+- Press *Run* and check that the program compiles and prints the correct answer, `400`, and `-7`
 
 * Functions
 
 Now it's time to talk about _functions_.
 
-All Go you write is made up of functions, in fact, you've been writing functions all along.
+All Go programs you write will be made up of functions. In fact, you've been writing functions all along.
 
 .play -edit src/functions/functions1/main.go /START OMIT/,/END OMIT/
 
-This is the same program as the previous example, showing the _function_declaration_, which was previously hidden.
+This is the same program as the previous example, but now we're showing the _function_declaration_ which was previously hidden.
 
-- All Go programs start in a function called `main`, we call this the _main_function_.
+- All Go programs start in a function called `main`; we call this the _main_function_.
 
-* func
+* The func statement
 
 You can declare your own functions with the `func` declaration.
 
@@ -535,9 +537,9 @@ A function's name must be a valid identifier, just like `const` and `var`.
 This program declares two functions, `main` and `hello`.
 
 - Uncomment the `println("こんにちは")` statement in `func`hello`.
-- Press *Run* and check the program compiles and prints こんにちは three times.
+- Press *Run* and check that the program compiles and prints こんにちは three times.
 
-_note_: `println` is a _built_in_ function provided, you don't need to declare it.
+_Note_: `println` is a _built_in_ function, so you don't need to declare it.
 
 * Function parameters
 
@@ -550,11 +552,11 @@ To pass an argument to a function, the type of the argument and the type of the 
 In this program the type of the argument passed to `hello` does not match the type of the `name` parameter.
 
 - Fix the declaration of `hello` so that the type of the parameter matches the type of the argument provided.
-- Press *Run* and check the program compiles and prints `こんにちは`David`.
+- Press *Run* and check that the program compiles and prints `こんにちは`David`.
 
 * Packages
 
-A package is the unit in which software is shared and reused in Go. All Go code is arranged into packages.
+A _package_ is the unit in which software is shared and reused in Go. All Go code is arranged into packages.
 
 Each source file in a package must begin with the same `package` declaration.
 
@@ -572,19 +574,22 @@ This program has the wrong `package` declaration.
 
 .play -edit src/packages/packages2/main.go
 
-- Press *Run* and observe the compile error.
+- Press *Run* and observe the compile-time error.
 - Change the `package` declaration to make the program compile.
-- Press *Run* to check that program prints its greeting.
+- Press *Run* to check that program prints the greeting correctly.
 
 * Import
 
 The final declaration we'll cover in this section is the _import_ declaration.
 
-The `import` declaration allows you to use code from other _packages_ into your package.
+The `import` declaration allows you to use code from other packages in your package.
 
-When you `import` a package, the _public_ types, functions, variables, types, and constants, are available with a prefix of the package's name.
+When you `import` a package, the _public_ types, functions, variables, and constants, are available with a prefix of the package's name.
 
+ import "time"
  time.Now	// denotes the Now function in package time
+
+* Import (cont.)
 
 Note that
 
@@ -604,25 +609,25 @@ both import the `fmt` and `time` packages. The syntax is different, but they are
 
 The `import` declaration must appear _after_ the `package` declaration, but before any `type`, `const`, `var`, or `func` declarations.
 
+: We haven't discussed the `type` statement yet, but we will...
+
 .play -edit src/imports/imports1/main.go 
 
 This program does not compile as the `import` declaration is in the wrong place.
 
-- Move the `var`now`=`time.Now()` declaration _below_ the `import` declaration.
-- Press *Run* to check that program prints the current time.
+- Move the variable declaration _below_ the `import` declaration.
+- Press *Run* to check that the program prints the current time.
 
 * Import (cont.)
 
 Packages contain both _public_ and _private_ symbols. We also call these _exported_ and _not_exported_, respectively.
 
-.play -edit src/imports/imports2/main.go 
+.play -edit src/imports/imports2/main.go
 
 This program does not compile as it refers to two _private_ symbols.
 
-- Fix the program by using the correct case for `Println` and `Time`.
+- Fix the program by changing `println` to `Println`, and changing `now` to `Now`.
 - Press *Run* to check that program prints the current time.
-
-_note_: If you are running this slide from [[https://go-talks.golang.org/][gotalks.golang.org]], the time may be reported as `2009-11-10`23:00:00`+0000`UTC`. This is a technical limitation.
 
 * fmt package
 
@@ -630,7 +635,7 @@ Do you remember this program?
 
 .play -edit src/imports/imports3/main.go
 
-Here it is again, showing the `func`, `package` and `import` declarations making it a complete Go program.
+Here it is again, showing the `func`, `package`, and `import` declarations making it a complete Go program.
 
 This program also uses the `Println` function from the `fmt` package, which is more capable than the built in `println` function.
 
@@ -642,32 +647,30 @@ Now you know the basics of Go!
 
 You've learnt:
 
-- How to declare constants and variables
+- How to declare constants and variables.
 - How to write `for` loops and use `if`.
 - How types work.
 - How to write your own functions.
 - How packages and `import` statements work.
 
-Time for a quick break!
+* 2. Advanced Syntax
 
 * Advanced Syntax
 
-* Advanced Syntax
-
-This section builds on the previous by exploring each of the things we learnt in a little more detail.
+This section builds on the previous by exploring each of the things we learned in a little more detail.
 
 In this section we'll use the Go Playground, a simple online code editor to perform our exercises.
 
 * Coding style
 
-All Go code is formatted according to a single style guide which is enforced with a tool called `gofmt`
+All Go code is formatted according to a single style guide which is enforced with a tool called `gofmt`.
 
 Having one single style that all Go code is formatted in improves readability and avoids the time wasted arguing about code formatting.
 
 "Gofmt's style is no one's favorite, yet gofmt is everyone's favorite."
-.caption [[https://go-proverbs.github.io/][Go Proverb]].
+.caption [[https://go-proverbs.github.io/][-- Go Proverb]]
 
-The Go playground can format your code according to the canonical Go style.
+The Go Playground can format your code according to the canonical Go style.
 
 - Follow [[https://play.golang.org/p/0Hz57BQdTA][this link]] and press the *Format* button to see this in action.
 
@@ -678,31 +681,33 @@ In previous examples we've written code like this
  var name = "go"
  var counter = 1
 
-Which both _declares_ and _initalises_ the variables `counter` and `name` respectively. What happens if we have code like this?
+Which both _declares_ and _initalizes_ the variables `counter` and `name`, respectively. What happens if we have code like this?
 
 .code src/zerovalue/zerovalue1/main.go
 
 What will this print?
 
+: Answered on next page.  It prints `"", 0`.
+
 - Follow [[https://play.golang.org/p/jioUB0t_LW][this link]] and press the *Run* button to see this in action.
 
 * Zero value (cont.)
 
-In Go, there is no unitialised memory. The Go runtime will always ensure that the memory allocated for each variable is initalised before use.
+In Go, there is no uninitialized memory. The Go runtime will always ensure that the memory allocated for each variable is initialized before use.
 
 If we write something like 
 
  var name string
  var counter int
 
-Then the memory assigned to the variables `name` and `counter` will be zeroed, as we have not provided an _initaliser_.
+Then the memory assigned to the variables `name` and `counter` will be zeroed, as we have not provided an _initalizer_.
 
 - The value of `name` will be `""` because that is the value of a string with zero length.
-- The value of `counter` will be zero, because that is the value of an `int` if we wrote `0` to its memory location.
+- The value of `counter` will be zero, because that is the value of an `int` if we write `0` to its memory location.
 
 * Zero value (cont.)
 
-Every type in Go has an associated _zero_value_. The value of that variable if we wrote zeros to its memory.
+Every type in Go has an associated _zero_value_. The value of that variable if we write zeros to its memory.
 
 - The zero value for integer types: `int`, `int8`, `uint`, `uint64`, etc, is `0`.
 - The zero value for floating point types: `float32`, `float64`, `complex128`, etc, is `0.0`.
@@ -724,13 +729,13 @@ Trying to compare two variables of _different_ types is detected at runtime.
 
 * Type conversions
 
-Sometimes you have variables of different integer types, you can _convert_ from one type to another using a conversion _expression_.
+You can _convert_ from one type to another using a conversion _expression_.
 
 The expression `T(v)` converts the value `v` to the type `T`.
 
 .code -edit src/types/types2/main.go
 
-In this example the assignment of `y`=`x` fails because `x` and `y` are different integer types.
+The assignment of `y`=`x` fails because `x` and `y` are different integer types.
 
 - Follow [[https://play.golang.org/p/wvG41C0lH4][this link]] and press the *Run* button.
 - Fix the program by _converting_ `x` to an `int` with `int(x)`.
@@ -745,6 +750,8 @@ If you have variables of different _widths_, you can _convert_ from one type to 
 - Follow [[https://play.golang.org/p/l4Q48pWAla][this link]] and press the *Run* button.
 - Fix the program by _converting_ `x` to an `int64` with `int64(x)`.
 - Press the *Run* button and confirm the program now prints `32000`.
+
+_Note_: Many languages will autoconvert from a narrower type to a wider type -- but not Go!
 
 * Type conversions (cont.)
 
@@ -784,7 +791,7 @@ This is what we call a _short_declaration_, which is the same as
  
  var x int = 0
 
-Short declaration is very common in Go programs, you'll see it everywhere, so let's do some exercises to familarise you with its use.
+Short declaration is very common in Go programs, you'll see it everywhere, so let's do some exercises to familarize you with its use.
 
 * Short declaration syntax (cont.)
 
@@ -824,7 +831,7 @@ In this example,
 
 Slices are very important in Go programs, so we'll spend a bit of time discussing them.
 
-_note_: A slice is _not_ an array. Go also supports arrays, but you'll see later than they aren't very common, or very easy to use, so we won't discuss them at the moment.
+_Note_: A slice is _not_ an array. Go also supports arrays, but you'll see later than they aren't very common, or very easy to use, so we won't discuss them at the moment.
 
 * How large is a slice?
 
@@ -858,14 +865,14 @@ Because declaring a slice variable and initalising it with `make` is a common op
 
 .code -edit src/slices/slices3/main.go
 
-This example declares `i` _and_ initalises it to be a slice of `int` with a length of 20.
+This example declares `i` _and_ initalizes it to be a slice of `int` with a length of 20.
 
 - Follow [[https://play.golang.org/p/b92SJ0Gx9s][this link]] and press the *Run* button.
 - Did `fmt.Println(len(i))` print the result you expected?
 
 * Slice exercises
 
-Let's do a quick exercise to familarise yourself with using slices.
+Let's do a quick exercise to familarize yourself with using slices.
 
 .code -edit src/slices/slices4/main.go
 
@@ -920,7 +927,7 @@ One solution could be to create the slice and assign a value to each element in 
 
 Doing this manually is verbose and boring; how would you do this for the first 50 primes?
 
-Go supports a method of assignment where we both _declare_ and _initalise_ the slice at once.
+Go supports a method of assignment where we both _declare_ and _initalize_ the slice at once.
 
 .play -edit src/slices/slices7/main.go
 
@@ -1055,11 +1062,11 @@ If an entry already exits with that key, it will be overwritten.
 
 - Follow [[https://play.golang.org/p/a-V5I0nZ5l][this link]] and complete the exercise.
 
-_note_: maps are always _unordered_.
+_Note_: Maps are always _unordered_.
 
 * Compact literal initalisation
 
-Just like slices, maps support compact literal initalisation, which declares and initalises the map.
+Just like slices, maps support compact literal initalisation, which declares and initalizes the map.
 
 .play -edit src/maps/maps3/main.go
 
@@ -1469,7 +1476,7 @@ The code for this kata is in `$GOPATH/src/katas/input`
 
 * Readers
 
-To familarise you with the `io.Reader` implementations available in the `io` package, this kata is all about Readers.
+To familarize you with the `io.Reader` implementations available in the `io` package, this kata is all about Readers.
 
 - Complete the kata in `$GOPATH/src/katas/readers` by making the test pass.
 - If you get stuck, consult the documentation in the [[https://golang.org/pkg/io/][`io`]] package.
@@ -1733,7 +1740,7 @@ Here are some examples
  // NextID returns the next ID in the sequence
  func NextID() uint64 { ... }
 
-_Notes_
+_Notes_:
 
 - Comments directly precede the thing they apply to, don't put an extra newline in between the comment and the symbol
 - You should comment both Public and private symbols, but godoc will only show you the documents
