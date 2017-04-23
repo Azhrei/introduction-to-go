@@ -133,6 +133,8 @@ The current version of Go as of this writing is 1.8.1.
 - New minor releases, Go 1.8, Go 1.9, etc, ship twice a year. 
 - Historically 2–4 bug fix or security releases occur during each six month period.
 
+Most platforms will require you to logout and back in so that the system `PATH` can be set correctly.
+
 * Installing Go on OS X
 
 Installing Go on OS X (also known as `darwin`) can be accomplished with
@@ -178,35 +180,28 @@ Unzip the zip file and place it at `C:\Go`.  Note that the `PATH` variable also 
 
 Depending on your Linux distribution they may have an up to date version of Go, but this is rare.  For example, RHEL7 is currently two releases behind the curve.
 
-The most reliable way to install the latest (64bit) version of Go is to untar
+The most reliable way to install the latest (64bit) version of Go is to:
 
-.link https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz
+- Download [[https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz]]
+- Change to the `/usr/local` directory.
+- Untar the downloaded file.
+- Add `/usr/local/go/bin` to your `PATH`:
 
-to the directory
-
- /usr/local
-
-and add 
- 
- /usr/local/go/bin
-
-to your `PATH`:
-
- echo "PATH=$PATH:/usr/local/go/bin" >> ~/.bash_profile
+ % echo "PATH=$PATH:/usr/local/go/bin" >> ~/.bash_profile
 
 * Following along in class
 
-To follow along with the slide presentation, there are two additional pieces that you'll need to install:
+To follow along with the slide presentation, there are three additional pieces that you'll need to install:
 
 - The Git source code management tool
-- The Go `present` tool
-- The slides and hands-on exercises for the course
+- The Go `present` tool (downloaded via Git)
+- The slides and hands-on exercises for the course (downloaded via Git)
 
 * Installing Git
 
 Visit [[https://git-scm.com/downloads][Git's download page]] and follow the instructions for your platform.
 
-Downloads are provided for Mac OS X, Windows, Linux, and Solaris.  Other system will need to look elsewhere or build Git from the source code.
+Downloads are provided for Mac OS X, Windows, Linux, and Solaris.  Other systems will need to look elsewhere or build Git from the source code.
 
 * Installing present
 
@@ -218,7 +213,7 @@ Change to that directory.
 
 A single command line will download and install the `present` tool:
 
- go get -u -v golang.org/x/tools/cmd/present
+ % go get -u -v golang.org/x/tools/cmd/present
 
 * Installing the slides and exercises
 
@@ -230,7 +225,9 @@ Change to that directory.
 
 The slides and lab exercises can be installed straight from the Git repository:
 
- git clone https://github.com/Azhrei/introduction-to-go
+ % git clone https://github.com/Azhrei/introduction-to-go
+ % cd introduction-to-go
+ % export GOPATH=$PWD
 
 * 1. Basic Syntax
 
