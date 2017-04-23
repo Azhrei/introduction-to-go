@@ -5,10 +5,11 @@ import (
 	"os"
 )
 
+// Note the new return value!
 func CountLines(path string) (int, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return 0, err
+		// return what?
 	}
 	defer f.Close()
 
@@ -18,7 +19,7 @@ func CountLines(path string) (int, error) {
 		lines++
 	}
 	if err := sc.Err(); err != nil {
-		return 0, err
+		// return what?
 	}
-	return lines, nil
+	// return what?
 }

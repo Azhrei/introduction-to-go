@@ -19,5 +19,4 @@ func main() {
 	p.Move(20, 10)
 	fmt.Println(p)
 }
-
 // END OMIT

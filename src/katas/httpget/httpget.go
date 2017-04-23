@@ -8,15 +8,11 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatalf("usage: %s $URL", os.Args[0])
-	}
-
-	resp, err := http.Get(os.Args[1])
+	// Make sure there's a URL on the command line
+	// Retrieve the content from the URL in Args[1]
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer resp.Body.Close()
-
+	// Close the http.Response object
 	io.Copy(os.Stdout, resp.Body)
 }

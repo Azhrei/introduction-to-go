@@ -25,6 +25,9 @@ func (a *alwaysReader) Read(buf []byte) (int, error) {
 
 // AReader returns an io.Reader which returns n 'A' characters
 func AReader(n int) io.Reader {
+	// If the alwaysReader.Read() has a pointer receiver,
+	// then 'r' must be a pointer.  If it has an object
+	// receiver, then 'r' must be an object...
 	r := &alwaysReader{ch: 'A'}
 	return io.LimitReader(r, int64(n))
 }

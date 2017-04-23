@@ -14,13 +14,11 @@ func CountLines(path string) int {
 
 	sc := bufio.NewScanner(f)
 	var lines int
-	for sc.Scan() {
-		lines++
-	}
+	// Read one line in a loop, incrementing 'lines'
+	// ...
 	if err := sc.Err(); err != nil {
 		log.Fatal(err)
 	}
-
 	f.Close()
 	return lines
 }

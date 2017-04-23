@@ -116,6 +116,120 @@ Go is an opinionated language.
 
 .play -edit src/hellohttp/hellohttp.go
 
+* 0. Setup
+
+* Installing Go
+
+The next few slides give examples of how to install Go on various systems.
+
+The official installation documentation is here:
+
+.link https://golang.org/doc/install
+
+The current version of Go as of this writing is 1.8.1.
+
+- New minor releases, Go 1.8, Go 1.9, etc, ship twice a year. 
+- Historically 2–4 bug fix or security releases occur during each six month period.
+
+* Installing Go on OS X
+
+Installing Go on OS X (also known as `darwin`) can be accomplished with
+
+*Mac*OS*Installer*
+
+The Go project provides a `.pkg` installer:
+
+.link https://storage.googleapis.com/golang/go1.8.1.darwin-amd64.pkg
+
+*Homebrew*
+
+If you use Homebrew to manage third party software on your Mac:
+
+ brew install golang
+
+*MacPorts*
+
+If you use MacPorts or Fink to manage third party software on your Mac:
+
+ sudo port install go
+ sudo fink install go
+
+* Installing Go on Windows
+
+*MSI*Installer*
+
+The Go project provides a `.msi` installer for 32bit and 64bit Windows:
+
+.link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.msi Windows 64bit MSI installer
+.link https://storage.googleapis.com/golang/go1.8.1.windows-386.msi Windows 32bit MSI installer
+
+*.zip*file* (not recommended)
+
+The Go project provides a `.zip` file of the Go compiler and standard library:
+
+.link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.zip Windows 64bit zip file
+.link https://storage.googleapis.com/golang/go1.8.1.windows-386.zip Windows 32bit zip file
+
+Unzip the zip file and place it at `C:\Go`.  Note that the `PATH` variable also needs to be established.
+
+* Installing Go on Linux
+
+Depending on your Linux distribution they may have an up to date version of Go, but this is rare.  For example, RHEL7 is currently two releases behind the curve.
+
+The most reliable way to install the latest (64bit) version of Go is to untar
+
+.link https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz
+
+to the directory
+
+ /usr/local
+
+and add 
+ 
+ /usr/local/go/bin
+
+to your `PATH`:
+
+ echo "PATH=$PATH:/usr/local/go/bin" >> ~/.bash_profile
+
+* Following along in class
+
+To follow along with the slide presentation, there are two additional pieces that you'll need to install:
+
+- The Git source code management tool
+- The Go `present` tool
+- The slides and hands-on exercises for the course
+
+* Installing Git
+
+Visit [[https://git-scm.com/downloads][Git's download page]] and follow the instructions for your platform.
+
+Downloads are provided for Mac OS X, Windows, Linux, and Solaris.  Other system will need to look elsewhere or build Git from the source code.
+
+* Installing present
+
+The `present` tool is written in Go and should be installed somewhere under the `$GOPATH` directory.  First, find out where that is:
+
+ % go env GOPATH
+
+Change to that directory.
+
+A single command line will download and install the `present` tool:
+
+ go get -u -v golang.org/x/tools/cmd/present
+
+* Installing the slides and exercises
+
+The slides should also be installed somewhere under the `$GOPATH` directory.
+
+ % go env GOPATH
+
+Change to that directory.
+
+The slides and lab exercises can be installed straight from the Git repository:
+
+ git clone https://github.com/Azhrei/introduction-to-go
+
 * 1. Basic Syntax
 
 * Basic Syntax 
@@ -1270,7 +1384,7 @@ and add
 
 to your `$PATH`.
 
- echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bash_profile
+ echo "PATH=$PATH:/usr/local/go/bin" >> ~/.bash_profile
 
 * Go tool
 
@@ -1289,11 +1403,11 @@ The `go` tool works inside a workspace where _all_ of your Go source code is sto
 
 All the source code for this workshop is included with this repository.
 
-You can set `$GOPATH` to be the base directory where you checked out this repository. eg.
+You can set `$GOPATH` to be the base directory where you checked out this repository.
 
- % export GOPATH=$HOME/introduction-to-go
+ % export GOPATH="$HOME/introduction-to-go"
 
-Using a workspace allows you to import code from other packages with a fixed name. eg.
+Using a workspace allows you to import code from other packages with a fixed name.
 
  import "github.com/pkg/profile"
 
@@ -1321,27 +1435,27 @@ Let's try building a Go program
 Let's write a clock, a program that prints out the current time
 
 - `cd`$GOPATH/src/whattimeisit`
-- edit `main.go` and finish the program (if you get stuck the answer is in `answer.go`)
-- Build the program with, `go`build` (if you make an error, go back and edit `main.go`)
+- edit `main.go` and finish the program (if you get stuck, the answer is in `answer.go`)
+- Build the program with `go`build` (if you make an error, go back and edit `main.go`)
 - Run your program `./whattimeisit`, it should print something like this
 
- The current time is 2016-12-05 12:33:18.222821474 +0900 JST
+ The current time is 2017-04-17 16:01:38.812148601 -0400 EDT
 
 * Testing
 
-I wanted to spend some time on testing because for the rest of the day we'll be using tests to complete code katas.
+We're going to spend some time on testing because for the rest of the day we'll be using tests to complete code katas.
 
-The testing package can also contain benchmark functions and examples, which show up in godoc.
+The testing package can also contain benchmark functions and examples, which show up in *godoc*.
 
 You should include tests for each package that you write.
 
-The `testing` package is ideal for _unit_tests_. It's _ok_ for functional tests, but not really suitable for complex integration tests.
+The `testing` package is ideal for _unit_tests_. It's just _ok_ for functional tests, and not really suitable for complex integration tests.
 
 * go test
 
 `go`test` is the unit testing framework built into the Go standard library. It lives in the `testing` package.
 
-Tests live in `_test.go` files, eg. the `strings` package has these files:
+Tests live in `*_test.go` files, eg. the `strings` package has these files:
 
 - `strings.go` functions to manipulate UTF-8 encoded strings.
 - `strings_test.go` tests for the `strings` package.
@@ -1350,7 +1464,7 @@ Each test is a function in the form
 
  func TestNameOfTest(t *testing.T) { ... }
 
-- `NameOfTest` is the name of your test, it _must_ start with an upper case letter.
+- `NameOfTest` is the name of your test; it _must_ start with an upper case letter.
 - Test functions take a `testing.T` value, which provides helpers like `t.Error` and `t.Fail`.
 
 * Writing tests
@@ -1362,7 +1476,7 @@ Let's write some tests using our own version of the strings package, called `sim
 
 Together we'll write some tests for the functions in our `simplestrings` package.
 
-We'll use the test coverage (see next slide) tool to check our work.
+We'll use the test coverage tool (see next slide) to check our work.
 
 * Test coverage
 
@@ -1377,15 +1491,16 @@ This produces a coverage file, `cover.out`
 
 _Protip_: I use these little shell functions to make this easier
 
- cover () {
-   t=$(mktemp -t cover)
-   go test $COVERFLAGS -coverprofile=$t $@ && go tool cover -func=$t && unlink $t
+ cover-base() {
+   (( $# < 2 )) && { echo >&2 "Incorrect usage of cover-base()"; exit 1; }
+   typeset type="${1:-func}"
+   shift
+   typeset t=$(mktemp -t cover)
+   trap 'rm "$t"; exit' 0
+   go test $COVERFLAGS -coverprofile="$t" "$@" && go tool cover -"$type"="$t"
  }
-
- cover-web() {
-   t=$(mktemp -t cover)
-   go test $COVERFLAGS -coverprofile=$t $@ && go tool cover -html=$t && unlink $t
- }
+ alias cover='cover-base "func"'
+ alias cover-web='cover-base "html"'
 
 * The standard library
 
@@ -1402,7 +1517,7 @@ Go ships with a rich standard library of packages. This includes
 
 For the rest of the day let's practice writing Go code together.
 
-The Ruby community have a tradition of _code_katas_, small exercises to make the test pass.
+The Ruby community has a tradition of _code_katas_, small exercises to make the test pass.
 
 As we work through the katas, we'll visit some more of the Go standard library.
 
@@ -1410,15 +1525,17 @@ As we work through the katas, we'll visit some more of the Go standard library.
 
 As a warm up, let's do a small kata together. 
 
-The code for this kata is in `$GOPATH/src/katas/sprintf`
+- Change to the directory `$GOPATH/src/katas/sprintf/`
+- The code for this kata is in `sprintf_test.go`
+- If you get stuck, the answers are in `answers_test.go`.
 
-If you get stuck, the answers are in `$GOPATH/src/katas/sprintf/answers_test.go`.
+_Note_: `fmt.Sprintf()` is the same as `fmt.Printf()` except that the output is returned as a string instead of being printed.
 
 * Structs
 
-So far we've discussed two kinds of types; _primitive_ types and _slice_ types.
+So far we've discussed two kinds of types: _primitive_ types and _slice_ types.
 
-Go supports what we call _compound_ types, that is, types that are _composed_ of other types. 
+Go supports what we call _compound_ typesl that is, types that are _composed_ of other types. 
 
 These are called _struct_ (for _structure_) types. We declare a struct like this:
 
@@ -1427,9 +1544,9 @@ These are called _struct_ (for _structure_) types. We declare a struct like this
           Y int
  }
 
-`Point` is a position in two dimensional space, it has two fields, `X` and `Y`.
+`Point` is a position in two dimensional space; it has two fields, `X` and `Y`.
 
-- Follow [[https://play.golang.org/p/fAnPV1MojK][this link]] to complete the example
+- Follow [[https://play.golang.org/p/fAnPV1MojK][this link]] to see a complete example.
 
 * Methods
 
@@ -1438,7 +1555,7 @@ To this point we've talked about functions, which belong to a package
  // Max returns the larger of a or b.
  func Max(a, b int) int
 
-In Go, you can attach a function to a type that you declare, this is called a _method_.
+In Go, you can attach a function to a type that you declare; this is called a _method_.
 
  type Point struct { X, Y int }
 
@@ -1448,7 +1565,8 @@ In Go, you can attach a function to a type that you declare, this is called a _m
 
 Any type that implements a `String()`string` method will be used by the `fmt` package when it prints the value.
 
-- Complete the kata in `$GOPATH/src/katas/methods` by making all the tests pass.
+- Change directory to `$GOPATH/src/katas/methods`.
+- Complete the struct in `methods.go` so that the tests pass.
 
 * Pointers
 
@@ -1458,13 +1576,22 @@ In Go, the method's receiver is also a value, so it's copied when you call a met
 
 .play -edit src/pointers/pointers1.go /START OMIT/,/END OMIT/
 
-- Complete the kata in `$GOPATH/src/katas/pointers` by making the test pass.
+* Pointers (cont.)
+
+Changing the object reference from `Point` to `*Point` will prevent Go from copying the object; a reference to the original object will be passed instead.
+
+.play -edit src/pointers/pointers2.go /START OMIT/,/END OMIT/
+
+- Change directory to `$GOPATH/src/katas/pointers`.
+- Complete the code in `pointers.go` so that the tests pass.
+
+: Now you know what the `t *testing.T` means in your unit test functions!
 
 * Interfaces
 
 Go is an object oriented language; we have methods on types, but Go does not support inheritance or sub-classes.
 
-Go supports polymorphism, _has_a_ (not _is_a_) with _interfaces_.
+Go supports polymorphism -- _has_a_, not _is_a_ -- with _interfaces_.
 
 An interface declaration looks like this:
 
@@ -1474,20 +1601,24 @@ An interface declaration looks like this:
 
 This is the [[https://golang.org/pkg/io/#Reader][`io.Reader`]] interface declaration from the [[https://golang.org/pkg/io/][`io`]] package.
 
-Go does not have an _implements_ keyword, any type with the correct set of methods _is_ an implementation of the interface.
+Go does not have an _implements_ keyword; any type with the correct set of methods is an implementation of the interface.
 
 * Reading input
 
-This kata asks you to write a function that reads lines from an io.Reader and returns a string containing all the lines read.
+This kata creates function that reads lines from an `io.Reader` and returns a string containing all the lines read.
 
-The code for this kata is in `$GOPATH/src/katas/input`
+- Change directory to `$GOPATH/src/katas/input`.
+- Investigate the code in `input.go` and run the tests.
 
 * Readers
 
 To familarize you with the `io.Reader` implementations available in the `io` package, this kata is all about Readers.
 
-- Complete the kata in `$GOPATH/src/katas/readers` by making the test pass.
+- Change directory to `$GOPATH/src/katas/readers`.
+- Complete the kata in `readers.go` so that the tests pass.
 - If you get stuck, consult the documentation in the [[https://golang.org/pkg/io/][`io`]] package.
+
+Unless you are very quick on the uptake, you'll need a few pieces of the solution explained; we'll do that shortly.
 
 * Error handling
 
@@ -1501,7 +1632,7 @@ You probably spotted that lots of methods and functions in the Go standard libra
          Error() string
  }
 
-Any type that has an `Error()`string` method, _implements_ the `error` interface.         
+Any type that has an `Error()`string` method _implements_ the `error` interface.         
 
 * Nil
 
@@ -1521,66 +1652,73 @@ Go uses the `error` interface and a simple convention to implement error handlin
 
 * Counting the number of lines in a file
 
-Now we know about `io.Reader`'s, `error`'s, we can write some more useful programs.
+Now that we know about `io.Reader`'s and `error`'s, we can write some more useful programs.
 
-The code for this kata is in `$GOPATH/src/katas/countlines`
+- Change directory to `$GOPATH/src/katas/countlines`.
+- Look around inside the directory before starting the kata.
+- Complete the kata in `count.go` so that the tests pass.
+- Look through the documentation for the `os` module as time permits.
 
 _Note_:
 
-- `go`test` always executes from the package's source directory, this makes it simple to include fixtures for your tests.
-- The go tool ignores any directory called `testdata`, or starts with a `.` or `_`.
+- `go`test` always executes from the package's source directory; this makes it simple to include fixtures for your tests.
+- The go tool ignores any directory called `testdata`, or any file or directory name that starts with a `.` or `_`.
 
-* defer
+* Error handling with defer
 
-In `CountLines` from our previous example, if an error happened during reading lines, `f` may not be closed.
+In `CountLines` from our previous example, if an error happened while reading lines, `f` may not be closed.
 
 Go has a keyword `defer` to ensure operations _always_ happen.
 
 .code -edit src/defer/defer1.go /START OMIT/,/END OMIT/
 
-* Error handling (cont.)
+* Error handling with defer (cont.)
 
 In the previous counting example, if an error happened, the program would exit.
 
 In this kata, we'll handle errors by returning them to the caller.
 
-The code for this kata is in `$GOPATH/src/katas/errorhandling`
+- Change directory to `$GOPATH/src/katas/errorhandling`.
+- Complete the kata in `errorhandling.go` so that the tests pass.
 
 * Passing in a reader
 
-Let's turn out `Countlines` function into a program.
-
-The code for this kata is in `$GOPATH/src/katas/linecount`
+Let's turn our `CountLines` function into a program.
 
 Complete the program so it reads the number of lines sent to it via stdin.
 
  % cat testdata/moby.txt | ./linecount 
  22659
 
+- Change directory to `$GOPATH/src/katas/linecount`.
+- Complete the kata in `linecount.go`.
+- You will need other functions within the `os` module, and `CountLines` will no longer need to open the file itself.
+
 * Handling multiple files
 
 Let's extend our `linecount` program to handle files passed on the command line.
-
-The code for this kata is in `$GOPATH/src/katas/countmanyfiles`
-
-Complete the program so it counts the lines in files passed via the command line.
 
  % ./countmanyfiles testdata/*.txt
  testdata/dracula.txt    15973
  testdata/pride-and-prejudice.txt        13427
  testdata/sherlock.txt   13052
 
-* Reading all the *.txt files in a directory
+- Change directory to `$GOPATH/src/katas/countmanyfiles`.
+- Complete the kata in the `countmanyfiles.go`.
 
-In the previous example we used the shell to list files to process.
+If time permits, add a grand total for all files to the output.
 
-In this kata, let's extend our `countmanyfiles` program to walk the directory listing itself.
+_Note_: For more complete handling of command line parameters, see the [[http://golang.org/pkg/flag/][Go `flag` library (link)]].
 
-To do this we use the [[https://golang.org/pkg/os/#File.Readdir][`ReadDir`]] method on [[https://golang.org/pkg/os/#File][`os.File`]].
+* Reading a directory
+
+: Last page before a "break" slide
+
+In this kata, let's extend our `countmanyfiles` program to walk the directory listing itself (instead of relying on the shell).
+
+To do this we use the [[https://golang.org/pkg/os/#File.Readdir][`ReadDir`]] method on [[https://golang.org/pkg/os/#File][`os.File` (link)]].
 
 _Note_: Be careful to only read _files_, not directories, and do not read files that don't end in `.txt`
-
-The code for this kata is in `$GOPATH/src/katas/countdir`
 
 Complete the program so it counts the lines in files passed via the command line.
 
@@ -1588,35 +1726,40 @@ Complete the program so it counts the lines in files passed via the command line
  testdata/christmas-carol.txt    4236
  testdata/tom-sawyer.txt 9209
 
-* Let's take a break
+- Change directory to `$GOPATH/src/katas/countdir`.
+- Complete the kata in the `countdir.go`.
+- You will need new functions from `os` and `string`.
+
+* Let's take a break!
 
 * HTTP request
 
-The Go standard library supports writing HTTP clients and servers with the [[https://golang.org/pkg/net/http/][`net/http`]] package.
-
-Using the `net/http` package is very straight forward:
+Using the [[https://golang.org/pkg/net/http/][`net/http` (link)]] package is very straight forward:
 
  resp, err := http.Get("http://example.com/")
  if err != nil {
          // handle error
  }
  
-`resp` is a [[https://golang.org/pkg/net/http/#Response][`http.Response`]] structure, which has lots of interesting fields.
+`resp` is a [[https://golang.org/pkg/net/http/#Response][`http.Response`]] structure, which has a lot of interesting fields (note that it must be closed when you're done with it).
 
-Let's write a simple HTTP client that can fetch HTTP URLs.
+Let's write a simple HTTP client that can fetch content from URLs.
 
  % ./httpget http://httpbin.org/ip
  {
    "origin": "125.203.122.114"
  }
 
-The code for this kata is in `$GOPATH/src/katas/httpget`
+- Change directory to `$GOPATH/src/katas/httpget`.
+- Complete the kata in the `httpget.go`.
 
 * JSON parsing
 
 The service at `http://httpbin.org/` returns JSON bodies.
 
-The [[https://golang.org/pkg/encoding/json/][`encoding/json`]] package can decode JSON data into a map.
+The [[https://golang.org/pkg/encoding/json/][`encoding/json` (link)]] package can decode JSON data into a map.
+
+: If you were trying to access a module you didn't have, what would be the Go command line to retrieve it?
 
  result := make(map[string]string)
  dec := json.NewDecoder(resp.Body)
@@ -1630,29 +1773,44 @@ Let's use this to write a program that will tell us our public IP address.
  % ./whatismyip 
  My IP address is: 125.203.122.114
 
-The code for this kata is in `$GOPATH/src/katas/whatismyip`
+- Change directory to `$GOPATH/src/katas/whatismyip`.
+- Complete the kata in the `whatismyip.go`.
 
 * JSON encoding
 
 If you're writing a RESTful web service it's common to have to return JSON encoded data.
 
-In Go the [[https://godoc.org/encoding/json][`encoding/json`]] package can turn Go maps and data structures into JSON.
+In Go, the [[https://godoc.org/encoding/json][`encoding/json` (link)]] package can turn Go maps and data structures into JSON.
 
 .play -edit src/jsonenc/jsonenc1.go /START OMIT/,/END OMIT/
 
 * Controlling JSON encoding
 
-The `encoding/json` package requires the fields of a struct to be public (start with an upper case letter), this means the keys in your JSON document will be upper case.
+The `encoding/json` package requires the fields of a struct to be public (start with an upper case letter). This means the keys in your JSON document will be upper case.
 
 We can fix this and control the output of the JSON with a _tag_.
 
-The format of the JSON tag is documented on the [[https://golang.org/pkg/encoding/json/#Marshal][`json.Encode`]] method.
+The format of the JSON tag is documented on the [[https://golang.org/pkg/encoding/json/#Marshal][`json.Marshal`]] method.
 
 .play -edit src/jsonenc/jsonenc2.go /START OMIT/,/END OMIT/
 
 * JSON encoding kata
 
-The code for this kata is in `$GOPATH/src/katas/jsonenc`
+Each object type in Go will be converted to a corresponding JSON type:
+
+- `int` becomes a decimal number,
+- `string` becomes a UTF-8 string (with some HTML escaping),
+- `[]byte` becomes a base64-encoded string,
+- and so on.
+
+See the documentation for the `json.Marshal` function for details.
+
+: Cyclic data structures will cause infinite recursion in `json.Marshal`.
+: Objects with runtime state cannot be converted (channels, complex, and function values).
+: Other caveats that generally apply to JSON apply here as well.
+
+- Change directory to `$GOPATH/src/katas/jsonenc`.
+- Complete the kata in the `jsonenc.go`.
 
 * Writing HTTP servers
 
@@ -1673,7 +1831,7 @@ This is a simple HTTP handler
 it takes two parameters
 
 - `w`, a `http.ResponseWriter` which is used to send data to the client
-- `r`, a `http.Request` which contains the uri, query parameters, and request body.
+- `r`, a `http.Request` which contains the URI, query parameters, and request body.
 
  mux := http.NewServeMux()
 
@@ -1683,13 +1841,13 @@ it takes two parameters
 
  mux.HandleFunc("/", index)
 
-Registers our `index` function, with the top level route, `"/"`.
+Registers our `index` function, with the top level route, "`/`".
 
  http.ListenAndServe(":8000", mux)
 
-Opens a socket on port 8080 and sends and requests to our `mux` (our router).
+Opens a socket on port 8000 and sends requests to our `mux` (our router).
 
-`http.ListenAndServe` won't return unless something happens to that listening socket (wifi drops, cable unplugs)
+`http.ListenAndServe` won't return unless something happens to that listening socket (wifi drops, cable unplugs).
 
 * go get
 
@@ -1697,9 +1855,9 @@ Opens a socket on port 8080 and sends and requests to our `mux` (our router).
 
 If a package's import path follows the `go`get` convention, `go`get` knows how to fetch the source code and download it to your `$GOPATH`.
 
-`go`get` isn't a complete dependency manager like rubygems or npm, etc, but it good enough for writing many applications.
+`go`get` isn't a complete dependency manager like `rubygems` or `npm`, but it good enough for writing many applications.
 
-We'll use `go`get` to fetch the source for `gorilla/mux`, a more advanced HTTP router
+We'll use `go`get` to fetch the source for `gorilla/mux`, a more advanced HTTP router.
 
  % go get github.com/gorilla/mux 
  % ls $GOPATH/src/github.com/gorilla/mux
@@ -1710,7 +1868,7 @@ We'll use `go`get` to fetch the source for `gorilla/mux`, a more advanced HTTP r
 
 * Using gorilla/mux
 
-The standard HTTP router, `http.ServeMux` is quite basic, so we'll upgrade to the `gorilla/mux` http router.
+The standard HTTP router, `http.ServeMux`, is quite basic so we'll upgrade to the `gorilla/mux` http router.
 
 .play -edit src/http/http2.go
 
@@ -1722,22 +1880,23 @@ Features:
 
 - When the client requests `/books/{book}` we look up the book and return the number of lines counted.
 - The response to the client should be in JSON format and include the number of lines and the title of the book.
-- Book directory is configurable.
+- The book directory should be configurable via the command line.
 
  % ./httplinecount ../../../books/ &
  [1] 17554
- % curl http://localhost:8080/books/moby.txt
+ % curl http://localhost:8000/books/moby.txt
  {"title":"moby.txt","lines":"22659"}
 
-The code for this kata is in `$GOPATH/src/katas/httplinecount`
+- Change directory to `$GOPATH/src/katas/httplinecount`.
+- Complete the kata in the `httplinecount.go`.
 
-* Time for a break
+* Time for a break!
 
 * Documenting packages with comments
 
 Go code is traditionally documented with comments in the source code. This is similar to Python's heredoc convention.
 
-Here are some examples
+Here are some examples.  More details can be found at [[https://blog.golang.org/godoc-documenting-go-code][the *GoDoc* page]].
 
  // simplestrings provides simple helper functions to work with strings
  package simplestrings
@@ -1750,8 +1909,8 @@ Here are some examples
 
 _Notes_:
 
-- Comments directly precede the thing they apply to, don't put an extra newline in between the comment and the symbol
-- You should comment both Public and private symbols, but godoc will only show you the documents
+- Comments directly precede the thing they apply to; don't put an extra newline in between the comment and the symbol.
+- You should comment both Public and private symbols, but [[https://godoc.org/golang.org/x/tools/cmd/godoc][`godoc` (link)]] will only show you the public documents.
 
 * Scope
 
@@ -1759,13 +1918,13 @@ We've talked about all the ways to declare a variable in Go, now we need to disc
 
 .code -edit src/scope/scope1/main.go
 
-This program declares `x` four times. All four `x` 's are _different_ because they exist in different scopes.
+This program declares `x` four times. All four `x`'s are _different_ because they exist in different scopes.
 
 - Follow [[https://play.golang.org/p/nIcOXVXgwl][this link]] and press the *Run* button.
 
 * Scope (cont.)
 
-The scope of a declaration is bound to the closest pair of curly braces, `{` and `}`.
+The scope of a declaration is bound to the closest pair of braces, `{` and `}`.
 
 .code -edit src/scope/scope2/main.go
 
@@ -1773,6 +1932,8 @@ In this example, we declare `x` to be 100 inside `main`, and 200 inside `f`.
 
 - Follow [[https://play.golang.org/p/Xfi3GOhTiC][this link]] and press the *Run* button.
 - Did the program print what you expected?
+
+: Will print `100`, `200`, and `100`.
 
 * Scope (cont.)
 
@@ -1783,6 +1944,8 @@ What do you expect this program will print?
 - Follow [[https://play.golang.org/p/7uxrebFzmK][this link]] and press the *Run* button.
 - Did you guess the right answer?
 
+: Will print `50`, `100`, `200`, and `100`.
+
 * Scope (cont.)
 
 What do you expect this program will print?
@@ -1791,6 +1954,8 @@ What do you expect this program will print?
 
 - Follow [[https://play.golang.org/p/7hpZre9LhI][this link]] and press the *Run* button.
 - Did you guess the right answer?
+
+: Will print `0` through `4`, then `100`.
 
 * Shadowing
 
@@ -1802,30 +1967,23 @@ Most of you will be comfortable with a _function_scoped_ variable shadowing a _p
 
 .code -edit src/scope/scope5/main.go /START2 OMIT/,/END2 OMIT/
 
-But a _block_scoped_ variable shadowing a _function_scoped_ variable may be surprising.
+But a _block_scoped_ variable shadowing a _function_scoped_ variable may be surprising.  (Well, except for Java, C/C++, Perl, and JavaScript programmers. :))
 
 * Question time
 
 * Question time
 
-This is your time for questions
-
-Ask me anything!
+This is your time for questions!
 
 * Conclusion
 
 * Conclusion
 
-Thank you very much for participating today, I hope that you enjoyed yourself and are encouraged to learn more about Go.
+Thank you very much for participating! I hope that you enjoyed yourself and are encouraged to learn more about Go.
 
 I would like to recommend several online resources:
 
 .link https://dave.cheney.net/resources-for-new-go-programmers Resources for new Go programmers
 .link https://tour.golang.org/welcome/1 tour.golang.org
 .link https://gobyexample.com/ Go by Example
-
-I would like to recommend two books:
-
-.link https://www.amazon.co.jp/exec/obidos/ASIN/4621300253 プログラミング言語Go
-.link https://www.amazon.co.jp/exec/obidos/ASIN/477418392X/ みんなのGo言語【現場で使える実践テクニック】
 

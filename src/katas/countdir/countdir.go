@@ -40,20 +40,20 @@ func CountDir(dir string) {
 	defer d.Close()
 	entries, err := d.Readdir(-1)
 	if err != nil {
+		// Error could be 'not a directory'
+		// or 'no permission' or ...?
 		log.Fatal(err)
 	}
 	for _, e := range entries {
-		if e.IsDir() {
-			continue
-		}
-		if strings.HasSuffix(e.Name(), ".txt") {
-			CountFile(filepath.Join(dir, e.Name()))
-		}
+		// Skip if 'e' is a directory
+		// Skip unless 'e' ends with '.txt'
+		// Count and print the number of lines
+		//   (be careful with the pathname!)
 	}
 }
 
 func main() {
-	args := os.Args[1:]
+	args := // How do you get data from the command line?
 	for _, arg := range args {
 		CountDir(arg)
 	}

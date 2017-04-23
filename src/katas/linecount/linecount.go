@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func CountLines(r io.Reader) (int, error) {
+func CountLines( /* what should the param be? */ ) (int, error) {
 	sc := bufio.NewScanner(r)
 	var lines int
 	for sc.Scan() {
@@ -18,7 +18,8 @@ func CountLines(r io.Reader) (int, error) {
 }
 
 func main() {
-	lines, err := CountLines(os.Stdin)
+	// How do you refer to stdin using the 'os' module?
+	lines, err := CountLines( /* ... */ )
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -8,17 +8,17 @@ import (
 )
 
 func main() {
-	resp, err := http.Get("http://httpbin.org/ip")
+	resp, err := // Retrieve the data...
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
-	result := make(map[string]string)
-	dec := json.NewDecoder(resp.Body)
-	if err := dec.Decode(&result); err != nil {
+	result := // Make the map variable
+	dec := // Create decoder/parser object
+	err := // Convert the JSON into a Go object
+	if err != nil {
 		log.Fatal(err)
 	}
-
 	fmt.Println("My IP address is:", result["origin"])
 }

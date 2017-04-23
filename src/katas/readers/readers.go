@@ -8,6 +8,8 @@ import (
 // Combine returns an io.Reader which represents
 // the contents of a and b.
 func Combine(a, b io.Reader) io.Reader {
+    // Which piece of the io package returns a Reader that starts
+    // reading from a second Reader when the first one is exhausted?
 	return a
 }
 
