@@ -136,7 +136,7 @@ Go is an opinionated language.
 
 * Hello, http!
 
-.play -edit src/hellohttp/hellohttp.go
+.play -edit src/hellohttp/hellohttp.go /START OMIT/,/END OMIT/
 
 * 0. Setup
 
