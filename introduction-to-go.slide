@@ -4,7 +4,7 @@ Cisco
 24 Apr 2017
 
 Frank Edwards
-support@eeconsulting.net
+support@eeconsulting.net (put "student" in the Subject)
 http://www.eeconsulting.net/
 
 * License and Materials
@@ -29,15 +29,35 @@ This workshop is aimed at programmers with experience in another programming lan
 
 This workshop consists of five main sections:
 
+- Setup
 - Basic Syntax
 - Advanced Syntax
 - Development environment and tooling
 - The standard library
 - Packages and applications
 
-After each section we'll have time for questions.
+We'll make time for questions in each section.
 
 As we work through the day there will be less of me talking, and more exercises to help you learn Go via doing.
+
+* Administrative
+
+Our daily schedule
+
+- Start and end time
+- Breaks
+- Lunch
+
+My contact information
+
+- Frank Edwards
+- support@eeconsulting.net (put *student* in the Subject)
+
+Introductions (25 words or less)
+
+- Name / City and time zone
+- Job Title / What you really do
+- Goals / Experience (last few years)
 
 * The Go programming language
 
