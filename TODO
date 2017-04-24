@@ -3,4 +3,8 @@ written?
 
 Add setup of Git, Go present, and the slides to the Setup Guide.
 
+Post- only
 
+Need new description of Slices and make()
+
+Example for HighPerf section: https://play.golang.org/p/AmQW-OrPC1

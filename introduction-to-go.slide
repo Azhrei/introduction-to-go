@@ -136,7 +136,7 @@ Go is an opinionated language.
 
 * Hello, http!
 
-.play -edit src/hellohttp/hellohttp.go /START OMIT/,/END OMIT/
+.play -edit src/hellohttp/hellohttp.go
 
 * 0. Setup
 
@@ -247,7 +247,7 @@ The slides and lab exercises can be installed straight from the Git repository:
 
  % git clone https://github.com/Azhrei/introduction-to-go
  % cd introduction-to-go
- % export GOPATH=$PWD
+ % present -notes
 
 * 1. Basic Syntax
 
@@ -456,7 +456,7 @@ Go supports a limited form of variable post-increment and post-decrement, i.e., 
 This program has a syntax error. 
 
 - Edit the sample code to correct the error by moving the `i++` statement above the declaration of `var`j`, and assigning `i` to `j`.
-- Press *Run* and check that the program compiles and prints the correct answer, `2 2`.
+- Press *Run* and check that the program compiles and prints the correct answer, `2`2`.
 
 * Looping
 
