@@ -3,8 +3,16 @@ written?
 
 Add setup of Git, Go present, and the slides to the Setup Guide.
 
+Answers to previous questions:
+    You *can* import directly into the current package.
+        See https://golang.org/ref/spec#Import_declarations
+            import . "lib/math"
+    Appending to a slice already at capacity, reallocs the memory.
+        See https://golang.org/ref/spec#Appending_and_copying_slices
+
 Post- only
-
-Need new description of Slices and make()
-
+Need new description of Slices and make(), cover arrays first.
 Example for HighPerf section: https://play.golang.org/p/AmQW-OrPC1
+Be more "ideomatic". :)  (Not idiotic.)
+
+
