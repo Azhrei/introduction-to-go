@@ -1479,12 +1479,27 @@ Tests live in `*_test.go` files, eg. the `strings` package has these files:
 - `strings.go` functions to manipulate UTF-8 encoded strings.
 - `strings_test.go` tests for the `strings` package.
 
-Each test is a function in the form
+Unit tests should check that functions return the correct values when passed valid input, but there should be other tests that ensure invalid input causes the functions to fail properly, too!
 
- func TestNameOfTest(t *testing.T) { ... }
+Files containing tests are typically declared to be in the same package as the functions they are testing.
 
-- `NameOfTest` is the name of your test; it _must_ start with an upper case letter.
-- Test functions take a `testing.T` value, which provides helpers like `t.Error` and `t.Fail`.
+This allows access to private functions as well as public, and in some cases may be necessary to satisfy preconditions required by some of the functions.
+
+* go test (cont.)
+
+For our example, each test is a function of the form:
+
+ package simplestrings
+ // ...
+ func TestCheckContainsTrue(t *testing.T) {
+     result := Contains(weekdays, "Tuesday")
+     if ! result {
+         t.Fatal("Contains() didn't work!")
+     }
+ }
+
+- `CheckContainsTrue` is the name of your test; it _must_ start with an upper case letter.
+- Test functions take a `testing.T` value, which provides helpers like `t.Error()` and `t.Fail()`.
 
 * Writing tests
 
@@ -1511,10 +1526,9 @@ This produces a coverage file, `cover.out`
 _Protip_: I use these little shell functions to make this easier
 
  cover-base() {
-   (( $# < 2 )) && { echo >&2 "Incorrect usage of cover-base()"; exit 1; }
    typeset type="${1:-func}"
    shift
-   typeset t=$(mktemp -t cover)
+   typeset t=$(mktemp -t cover.XXXXXXXX)
    trap 'rm "$t"; exit' 0
    go test $COVERFLAGS -coverprofile="$t" "$@" && go tool cover -"$type"="$t"
  }
