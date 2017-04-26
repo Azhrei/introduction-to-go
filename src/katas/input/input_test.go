@@ -1,4 +1,4 @@
-package main
+package fred
 
 import (
 	"strings"
@@ -6,6 +6,7 @@ import (
 )
 
 func TestReadAll(t *testing.T) {
+	// Multiline strings use backtics instead of double-quotes
 	const lines = `Line 1
 Line 2
 Line 3

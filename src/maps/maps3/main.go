@@ -11,9 +11,8 @@ func main() {
 		4: "Thursday",
 		5: "Friday",
 		6: "Saturday",
-		7: "Sunday",        // Note thet trailing comma
+		7: "Sunday",        // Note the trailing comma
 	}
 	fmt.Println(days)
 }
-
 // END OMIT

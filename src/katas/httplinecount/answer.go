@@ -33,6 +33,8 @@ func bookController(w http.ResponseWriter, r *http.Request) {
 	path := filepath.Join(booksdir, book)
 
 	// count the lines in the book
+	// (How would you cache this so that the same book doesn't have
+	// to be read again if another request comes in for it?)
 	lines, err := countLines(path)
 
 	// if there was an error, report it back to the client and return
@@ -71,16 +73,17 @@ func countLines(path string) (int, error) {
 func main() {
 	// check that os.Args[1] has the books directory
 	if len(os.Args) < 2 {
-		log.Fatal("usage: %s /path/to/books", os.Args[0])
+		log.Fatal("Usage: %s /path/to/books", os.Args[0])
 	}
 
 	// record the books directory
+	// (probably should verify it exists and isDir())
 	booksdir = os.Args[1]
 
 	// set up our router
 	r := mux.NewRouter()
 
-	// register /books/{book} handler
+	// register "/books/{book}" handler
 	r.HandleFunc("/books/{book}", bookController)
 
 	// listen and serve for ever

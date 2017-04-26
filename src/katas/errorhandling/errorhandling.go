@@ -5,7 +5,9 @@ import (
 	"os"
 )
 
-// Note the new return value!
+// CountLines opens the file referenced by the parameter, then
+// counts the number of lines therein. Last, it returns the count.
+// (Note the new return value!)
 func CountLines(path string) (int, error) {
 	f, err := os.Open(path)
 	if err != nil {

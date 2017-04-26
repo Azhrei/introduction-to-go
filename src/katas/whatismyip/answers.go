@@ -18,9 +18,9 @@ func main() {
 
 	result := make(map[string]string)
 	dec := json.NewDecoder(resp.Body)
-	if err := dec.Decode(&result); err != nil {
+	err := dec.Decode(&result)
+	if err != nil {
 		log.Fatal(err)
 	}
-
 	fmt.Println("My IP address is:", result["origin"])
 }

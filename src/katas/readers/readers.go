@@ -2,15 +2,14 @@ package readers
 
 import (
 	"io"
-	"strings"
 )
 
 // Combine returns an io.Reader which represents
 // the contents of a and b.
 func Combine(a, b io.Reader) io.Reader {
-    // Which piece of the io package returns a Reader that starts
-    // reading from a second Reader when the first one is exhausted?
-	return a
+	// Which piece of the io package returns a Reader that starts
+	// reading from a second Reader when the first one is exhausted?
+	return io.MultiReader(a, b)
 }
 
 // always reader always fills the read buffer with
@@ -28,5 +27,6 @@ func (a *alwaysReader) Read(buf []byte) (int, error) {
 
 // AReader returns an io.Reader which returns n 'A' characters
 func AReader(n int) io.Reader {
-	return strings.NewReader("AAAAAAAAAA")
+	r := &alwaysReader{'A'}
+	return io.LimitReader(r, int64(n))
 }

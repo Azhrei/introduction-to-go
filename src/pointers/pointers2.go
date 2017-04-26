@@ -16,7 +16,7 @@ func main() {
 	p := Point{X: 20, Y: 20}
 	fmt.Println(p)
 
-	p.Move(20, 10)
+	p.Move(20, 10)	// This one now works!
 	fmt.Println(p)
 }
 // END OMIT

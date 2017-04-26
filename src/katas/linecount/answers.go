@@ -10,6 +10,8 @@ import (
 	"os"
 )
 
+// CountLines reads from the io.Reader parameter and returns the number
+// of lines contained therein.
 func CountLines(r io.Reader) (int, error) {
 	sc := bufio.NewScanner(r)
 	var lines int

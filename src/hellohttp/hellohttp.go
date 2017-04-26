@@ -19,7 +19,7 @@ func HelloServer(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-    log.Println("please connect to http://localhost:7777/")
+    log.Println("Please visit http://localhost:7777/")
     http.HandleFunc("/", HelloServer)
     log.Fatal(http.ListenAndServe(":7777", nil))
 }

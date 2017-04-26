@@ -1,4 +1,4 @@
-package main
+package fred
 
 import (
 	"bufio"
@@ -11,12 +11,14 @@ import (
 // all the data read as a string
 func ReadAll(r io.Reader) string {
 	sc := bufio.NewScanner(r)
-	var lines []string
+	var lines []string // = make([]string, 0, 100)
 	for sc.Scan() {
+		// Is appending one item at a time a good idea?
 		lines = append(lines, sc.Text())
 	}
-	if sc.Err() != nil {
-		log.Fatal(sc.Err())
+	err := sc.Err()
+	if err != nil {
+		log.Fatal(err)
 	}
 	return strings.Join(lines, "\n")
 }

@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+// CountLines opens the file referenced by the parameter, then
+// counts the number of lines therein. Last, it returns the count.
 func CountLines(path string) int {
 	f, err := os.Open(path)
 	if err != nil {
@@ -14,7 +16,7 @@ func CountLines(path string) int {
 
 	sc := bufio.NewScanner(f)
 	var lines int
-	// Read one line in a loop, incrementing 'lines'
+	// Read one line at a time in a loop, incrementing 'lines'
 	// ...
 	if err := sc.Err(); err != nil {
 		log.Fatal(err)

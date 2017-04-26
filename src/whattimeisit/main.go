@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	// need import here for best looking output
 	"time"
 )
 
 func main() {
-	now := time.Now()
-	fmt.Println("The current time is", now)
+	now := time.Now		// this doesn't work
+	println("The current time is", now)
 }
