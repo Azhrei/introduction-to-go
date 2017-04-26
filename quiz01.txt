@@ -1,21 +1,28 @@
-1.  The Go programming language is dynamically typed like JavaScript
-and Python, or statically typed like Java and C++.
+1a. The Go programming language is dynamically typed like JavaScript
+    and Python, or statically typed like Java and C++.
     A.  Dynamically, like JS and Python
     B.  Statically, like Java and C++
+   *C.  It has elements of both; it's a hybrid
 
-2.  Arrays in Java are bounds-checked, but arrays in C++ are not.  The
-Go language DOES do bounds checking for slices and arrays.
-    A.  True
+1b. Arrays in Java are bounds-checked, but arrays in C++ are not.  The
+    Go language DOES do bounds checking for slices and arrays.
+   *A.  True
     B.  False
+
+2.  Arrays provide the backing store for slices.  If a slice currently
+    encompasses all elements of an array, can the append() function be
+    used on the slice to add a new element to the end?
+   *A.  Yes
+    B.  No
+    C.  Only in certain circumstances
 
 3.  Java guarantees that variables are initialized to zero, C++
-does not.  The Go language guarantees that all variables are
-initialized to zero.
-    A.  True
+    does not.  The Go language guarantees that all variables are
+    initialized.
+   *A.  True
     B.  False
 
-4.  Does this code compile?  If not, what is the error message?
-(You can send it to me in a private chat!)
+4a. Does this code compile?
 
     package main
 
@@ -24,12 +31,62 @@ initialized to zero.
         println(nums)
     }
 
+    A.  Yes
+    B.  No
+    C.  Only on Tuesdays, and only in months with no "R" in their name
+
+4b. If you answered that the previous code doesn't compile, which of these
+    answers accurately reflects the error message?
+    A.  Syntax error (extra comma in slice initializer)
+    B.  Syntax error (missing semicolons on both lines in main())
+    C.  Redeclared identifier (package 'main' conflicts with function 'main')
+    D.  Undefined variable (Variable 'nums' has not been declared)
+   *E.  None of the above (because the code compiles without error)
+
 5.  Given the following statements, what does the output look like?
-(You can send it to me in a private chat!)
 
     package main
 
     func main() {
-        primes := []int { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, }
+        primes := []int { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 }
         println(primes[2:5])
     }
+
+    A.  [2, 3, 4, 5]
+    B.  [2, 3, 5, 7]
+    C.  [2 3 5 7]
+   *D.  [5 7 11]
+    E.  [5 7 11 13]
+    F.  None of the above
+
+6.  Import statements allow pre-written pieces of code to be used
+    within new applications by merely referencing their name.  Is
+    it required that the filename and the package name are the same?
+    A.  Yes
+   *B.  No
+    C.  Only the directory name must match
+
+7.  Which of the following is not a valid type name in Go?
+    A.  uint64
+    B.  string
+    C.  rune
+    D.  func
+    E.  bool
+   *F.  All of these are valid
+
+8.  What does the letter "u" in the type name "uint64" stand for?
+    A.  Underflow
+    B.  Unknown
+   *C.  Unsigned
+    D.  Unspecified
+    E.  None of the above
+
+9.  Identifiers in Go may contain Unicode letters, digits, and the
+    underscore.  Which of those are not allowed at the BEGINNING of
+    the identifier name?
+    A.  Uppercase letters
+    B.  Lowercase letters
+   *C.  Digits
+    D.  Underscore
+    E.  All of the above are allowed
+
