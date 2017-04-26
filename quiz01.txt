@@ -31,9 +31,9 @@
         println(nums)
     }
 
-    A.  Yes
+   *A.  Yes
     B.  No
-    C.  Only on Tuesdays, and only in months with no "R" in their name
+    C.  Only on Tuesdays in months with no "R"
 
 4b. If you answered that the previous code doesn't compile, which of these
     answers accurately reflects the error message?
@@ -79,11 +79,11 @@
     B.  Unknown
    *C.  Unsigned
     D.  Unspecified
-    E.  None of the above
+    E.  Underdog
 
 9.  Identifiers in Go may contain Unicode letters, digits, and the
-    underscore.  Which of those are not allowed at the BEGINNING of
-    the identifier name?
+    underscore.  Which of those are NOT allowed at the beginning of
+    the identifier?
     A.  Uppercase letters
     B.  Lowercase letters
    *C.  Digits

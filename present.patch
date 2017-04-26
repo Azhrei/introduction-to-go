@@ -1,0 +1,51 @@
+Submodule src/golang.org/x/tools contains modified content
+diff --git a/src/golang.org/x/tools/cmd/present/static/styles.css b/src/golang.org/x/tools/cmd/present/static/styles.css
+index d877682b..43df1924 100644
+--- a/src/golang.org/x/tools/cmd/present/static/styles.css
++++ b/src/golang.org/x/tools/cmd/present/static/styles.css
+@@ -265,6 +265,13 @@
+   letter-spacing: -1px;
+ }
+ 
++.slideNum {
++    font-size: 0.75em;
++    position: absolute;
++    bottom: 0px;
++    right: 4px;
++}
++
+ b {
+   font-weight: 600;
+ }
+@@ -382,7 +389,8 @@ code {
+   font-size: 95%;
+   font-family: 'Droid Sans Mono', 'Courier New', monospace;
+ 
+-  color: black;
++/* color: black; */
++  color: blue;
+ }
+ 
+ article > .image,
+diff --git a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
+index 878440b6..dabeeb36 100644
+--- a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
++++ b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
+@@ -53,6 +53,7 @@
+         {{end}}
+       </article>
+ 
++  {{$numSlides := len .Sections}}
+   {{range $i, $s := .Sections}}
+   <!-- start of slide {{$s.Number}} -->
+       <article>
+@@ -62,6 +63,9 @@
+       {{else}}
+         <h2>{{$s.Title}}</h2>
+       {{end}}
++      <span class="slideNum">
++	{{$i}}/{{$numSlides}}
++      </span>
+       </article>
+   <!-- end of slide {{$i}} -->
+   {{end}}{{/* of Slide block */}}

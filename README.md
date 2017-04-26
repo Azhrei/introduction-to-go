@@ -4,19 +4,30 @@ This slide deck and supporting material is part of the _Introduction to Go_ trai
 
 # Installation
 
-1. Clone this code into a directory
- ```
- % git clone https://github.com/Azhrei/introduction-to-go
- ```
-
-2. Install the Go present tool
+1. Install the Go `present` tool
  ```
  % go get -u -v golang.org/x/tools/cmd/present
  ```
 
-3. Run the present tool
+2. Clone this code into a directory
  ```
- % cd introduction-to-go && present
+ % git clone https://github.com/Azhrei/introduction-to-go
+ % cd introduction-to-go
+ ```
+
+3. (Optional) Apply the patch to `present`
+ ```
+ % patch -p0 < present.patch
+ ```
+
+The above patch adds a progress indicator (slide number / total number
+of slides) in the bottom right corner of every slide, and changes the
+color of "code" text to be blue (instead of black) so they standout
+better.
+
+4. Run the `present` tool
+ ```
+ % present
  ```
 
 The slides will be available at [http://127.0.0.1:3999/introduction-to-go.slide](http://127.0.0.1:3999/introduction-to-go.slide#1)
