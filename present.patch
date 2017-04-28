@@ -1,6 +1,6 @@
 Submodule src/golang.org/x/tools contains modified content
 diff --git a/src/golang.org/x/tools/cmd/present/static/styles.css b/src/golang.org/x/tools/cmd/present/static/styles.css
-index d877682b..43df1924 100644
+index d877682b..7c4d0f37 100644
 --- a/src/golang.org/x/tools/cmd/present/static/styles.css
 +++ b/src/golang.org/x/tools/cmd/present/static/styles.css
 @@ -265,6 +265,13 @@
@@ -27,11 +27,24 @@ index d877682b..43df1924 100644
  }
  
  article > .image,
+diff --git a/src/golang.org/x/tools/cmd/present/templates/action.tmpl b/src/golang.org/x/tools/cmd/present/templates/action.tmpl
+index 8bde042c..e4d10e2c 100644
+--- a/src/golang.org/x/tools/cmd/present/templates/action.tmpl
++++ b/src/golang.org/x/tools/cmd/present/templates/action.tmpl
+@@ -4,7 +4,7 @@ It determines how the formatting actions are rendered.
+ */}
+ 
+ {{define "section"}}
+-  <h{{len .Number}} id="TOC_{{.FormattedNumber}}">{{.FormattedNumber}} {{.Title}}</h{{len .Number}}>
++  <h{{len .Number}} id="TOC_{{.FormattedNumber}}">{{.FormattedNumber}} {{style .Title}}</h{{len .Number}}>
+   {{range .Elem}}{{elem $.Template .}}{{end}}
+ {{end}}
+ 
 diff --git a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
-index 878440b6..dabeeb36 100644
+index 878440b6..af789d71 100644
 --- a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
 +++ b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
-@@ -53,6 +53,7 @@
+@@ -53,15 +53,19 @@
          {{end}}
        </article>
  
@@ -39,9 +52,13 @@ index 878440b6..dabeeb36 100644
    {{range $i, $s := .Sections}}
    <!-- start of slide {{$s.Number}} -->
        <article>
-@@ -62,6 +63,9 @@
+       {{if $s.Elem}}
+-        <h3>{{$s.Title}}</h3>
++        <h2>{{style $s.Title}}</h2>
+         {{range $s.Elem}}{{elem $.Template .}}{{end}}
        {{else}}
-         <h2>{{$s.Title}}</h2>
+-        <h2>{{$s.Title}}</h2>
++        <h2>{{style $s.Title}}</h2>
        {{end}}
 +      <span class="slideNum">
 +	{{$i}}/{{$numSlides}}

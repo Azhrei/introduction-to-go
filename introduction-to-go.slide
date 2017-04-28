@@ -159,42 +159,37 @@ Most platforms will require you to logout and back in so that the system `PATH` 
 
 Installing Go on OS X (also known as `darwin`) can be accomplished with
 
-*Mac*OS*Installer*
+*Mac*OS*Installer* (recommended)
 
 The Go project provides a `.pkg` installer:
 
 .link https://storage.googleapis.com/golang/go1.8.1.darwin-amd64.pkg
 
-*Homebrew*
+*Other*options*
 
-If you use Homebrew to manage third party software on your Mac:
+ brew install golang        # If you use Homebrew
+ sudo port install go       # If you use MacPorts
+ sudo fink install go       # If you use Fink
 
- brew install golang
-
-*MacPorts*
-
-If you use MacPorts or Fink to manage third party software on your Mac:
-
- sudo port install go
- sudo fink install go
+_Note_: Getting your version of Go from anywhere other than the official web site means your version will likely be older than the current stable release.
 
 * Installing Go on Windows
 
-*MSI*Installer*
+*MSI*Installer* (recommended)
 
 The Go project provides a `.msi` installer for 32bit and 64bit Windows:
 
 .link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.msi Windows 64bit MSI installer
 .link https://storage.googleapis.com/golang/go1.8.1.windows-386.msi Windows 32bit MSI installer
 
-*.zip*file* (not recommended)
+*.zip*file*
 
 The Go project provides a `.zip` file of the Go compiler and standard library:
 
 .link https://storage.googleapis.com/golang/go1.8.1.windows-amd64.zip Windows 64bit zip file
 .link https://storage.googleapis.com/golang/go1.8.1.windows-386.zip Windows 32bit zip file
 
-Unzip the zip file and place it at `C:\Go`.  Note that the `PATH` variable also needs to be established.
+Unzip the zip file and place it at `C:\Go`.  Note that the `PATH` variable still needs to be updated (which the MSI installer does for you).
 
 * Installing Go on Linux
 

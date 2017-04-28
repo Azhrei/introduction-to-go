@@ -3,12 +3,16 @@ written?
 
 Add setup of Git, Go present, and the slides to the Setup Guide.
 
+Advertise as "Similar to Go Tutorial but takes things deeper."
+
 Mention the use of:
     import m "lib/math"
     ...and...
     import . "lib/math"
+
 Need new description of Slices and make():
     Suggest covering the basics of arrays first, then a little bit about
     slices.  A later section should revisit slices and demonstrate
     operations like append() and cap().
-Be more "idiomatic". :)  (Not idiotic.)
+
+Be more "idiomatic".  (Not idiotic. :))

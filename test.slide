@@ -1,0 +1,30 @@
+# Used for testing changes to the 'present' tool, such as
+#   Proper sublevel support (*, **, ***, etc denote sublevels)
+#   Font styling working correctly in titles (`, *, and _)
+#   Others?
+# vi:set tw=0:
+Introduction to Go
+Cisco
+24 Apr 2017
+
+Frank Edwards
+support@eeconsulting.net (put "student" in the Subject)
+http://www.eeconsulting.net/
+
+* Go Overview (Chapter Title)
+
+Go is an interesting language.
+
+No, really.  It is.
+
+- Here's a bullet.
+- And a sub-bullet, maybe?
+- Another top-level bullet
+
+** Slide title (first slide)
+
+- Under section 1.1
+
+** Slide title (second slide)
+
+- Under section 1.2

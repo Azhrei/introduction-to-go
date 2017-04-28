@@ -17,7 +17,7 @@ This slide deck and supporting material is part of the _Introduction to Go_ trai
 
 3. (Optional) Apply the patch to `present`
  ```
- % patch -p0 < present.patch
+ % patch -p1 < present.patch
  ```
 
 The above patch adds a progress indicator (slide number / total number
