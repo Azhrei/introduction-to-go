@@ -3,28 +3,32 @@
 #   Font styling working correctly in titles (`, *, and _)
 #   Others?
 # vi:set tw=0:
-Introduction to Go
-Cisco
+Document Title
+Client
 24 Apr 2017
 
-Frank Edwards
+Author Name Here
 support@eeconsulting.net (put "student" in the Subject)
 http://www.eeconsulting.net/
 
 * Go Overview (Chapter Title)
 
-Go is an interesting language.
-
-No, really.  It is.
-
-- Here's a bullet.
-- And a sub-bullet, maybe?
-- Another top-level bullet
-
 ** Slide title (first slide)
 
 - Under section 1.1
 
+Go is an interesting language.
+
+- Here's a bullet.
+- And another...
+- Another top-level bullet
+
 ** Slide title (second slide)
 
 - Under section 1.2
+
+* Chapter Two
+
+** Slide title (first slide)
+
+** Slide title (second slide)
