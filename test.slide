@@ -13,7 +13,10 @@ http://www.eeconsulting.net/
 
 * Go Overview (Chapter Title)
 
+- You probably don't want this text here (notice there's no slide title?) so DON'T DO THIS!
 - bullet here
+- another bullet
+- Instead, the top-level chapter title (line starting with "*") should only be followed by a sublevel title (line starting with "**") to act as a new slide title.
 
 ** Slide title (first slide)
 

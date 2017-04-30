@@ -1,11 +1,183 @@
 diff --git a/present.patch b/present.patch
-index 14b8051..e69de29 100644
+index f9a80bb..e69de29 100644
 --- a/present.patch
 +++ b/present.patch
-@@ -1,68 +0,0 @@
--Submodule src/golang.org/x/tools contains modified content
+@@ -1,286 +0,0 @@
+-diff --git a/present.patch b/present.patch
+-index 14b8051..e69de29 100644
+---- a/present.patch
+-+++ b/present.patch
+-@@ -1,68 +0,0 @@
+--Submodule src/golang.org/x/tools contains modified content
+--diff --git a/src/golang.org/x/tools/cmd/present/static/styles.css b/src/golang.org/x/tools/cmd/present/static/styles.css
+--index d877682b..7c4d0f37 100644
+----- a/src/golang.org/x/tools/cmd/present/static/styles.css
+--+++ b/src/golang.org/x/tools/cmd/present/static/styles.css
+--@@ -265,6 +265,13 @@
+--   letter-spacing: -1px;
+-- }
+-- 
+--+.slideNum {
+--+    font-size: 0.75em;
+--+    position: absolute;
+--+    bottom: 0px;
+--+    right: 4px;
+--+}
+--+
+-- b {
+--   font-weight: 600;
+-- }
+--@@ -382,7 +389,8 @@ code {
+--   font-size: 95%;
+--   font-family: 'Droid Sans Mono', 'Courier New', monospace;
+-- 
+---  color: black;
+--+/* color: black; */
+--+  color: blue;
+-- }
+-- 
+-- article > .image,
+--diff --git a/src/golang.org/x/tools/cmd/present/templates/action.tmpl b/src/golang.org/x/tools/cmd/present/templates/action.tmpl
+--index 8bde042c..e4d10e2c 100644
+----- a/src/golang.org/x/tools/cmd/present/templates/action.tmpl
+--+++ b/src/golang.org/x/tools/cmd/present/templates/action.tmpl
+--@@ -4,7 +4,7 @@ It determines how the formatting actions are rendered.
+-- */}
+-- 
+-- {{define "section"}}
+---  <h{{len .Number}} id="TOC_{{.FormattedNumber}}">{{.FormattedNumber}} {{.Title}}</h{{len .Number}}>
+--+  <h{{len .Number}} id="TOC_{{.FormattedNumber}}">{{.FormattedNumber}} {{style .Title}}</h{{len .Number}}>
+--   {{range .Elem}}{{elem $.Template .}}{{end}}
+-- {{end}}
+-- 
+--diff --git a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
+--index 878440b6..af789d71 100644
+----- a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
+--+++ b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
+--@@ -53,15 +53,19 @@
+--         {{end}}
+--       </article>
+-- 
+--+  {{$numSlides := len .Sections}}
+--   {{range $i, $s := .Sections}}
+--   <!-- start of slide {{$s.Number}} -->
+--       <article>
+--       {{if $s.Elem}}
+---        <h3>{{$s.Title}}</h3>
+--+        <h2>{{style $s.Title}}</h2>
+--         {{range $s.Elem}}{{elem $.Template .}}{{end}}
+--       {{else}}
+---        <h2>{{$s.Title}}</h2>
+--+        <h2>{{style $s.Title}}</h2>
+--       {{end}}
+--+      <span class="slideNum">
+--+	{{$i}}/{{$numSlides}}
+--+      </span>
+--       </article>
+--   <!-- end of slide {{$i}} -->
+--   {{end}}{{/* of Slide block */}}
+-Submodule src/golang.org/x/tools cbb995d0..bd8f944c:
+-diff --git a/src/golang.org/x/tools/cmd/present/play.go b/src/golang.org/x/tools/cmd/present/play.go
+-index 831b99f4..005483ff 100644
+---- a/src/golang.org/x/tools/cmd/present/play.go
+-+++ b/src/golang.org/x/tools/cmd/present/play.go
+-@@ -15,7 +15,10 @@ import (
+- 	"golang.org/x/tools/godoc/static"
+- )
+- 
+--var scripts = []string{"jquery.js", "jquery-ui.js", "playground.js", "play.js"}
+-+var scripts = []string{
+-+//    "jquery.js",
+-+    "jquery-ui.js", "playground.js", "play.js"
+-+}
+- 
+- // playScript registers an HTTP handler at /play.js that serves all the
+- // scripts specified by the variable above, and appends a line that
+-@@ -40,4 +43,24 @@ func playScript(root, transport string) {
+- 		w.Header().Set("Content-type", "application/javascript")
+- 		http.ServeContent(w, r, "", modTime, bytes.NewReader(b))
+- 	})
+-+
+-+	// jQuery is handled separately because /slides.js needs it as
+-+	// well, but we want to pull it from godoc instead of our own
+-+	// /static/ directory.
+-+	var jq bytes.Buffer
+-+	p := "jquery.js"
+-+	if s, ok := static.Files[p]; ok {
+-+		jq.WriteString(s)
+-+	} else {
+-+		b, err := ioutil.ReadFile(filepath.Join(root, "static", p))
+-+		if err != nil {
+-+			panic(err)
+-+		}
+-+		jq.Write(b)
+-+	}
+-+	jq := buf.Bytes()
+-+	http.HandleFunc("/jquery.js", func(w http.ResponseWriter, r *http.Request) {
+-+		w.Header().Set("Content-type", "application/javascript")
+-+		http.ServeContent(w, r, "", modTime, bytes.NewReader(jq))
+-+	})
+- }
+-diff --git a/src/golang.org/x/tools/cmd/present/static/custom.js b/src/golang.org/x/tools/cmd/present/static/custom.js
+-new file mode 100644
+-index 00000000..388e83b4
+---- /dev/null
+-+++ b/src/golang.org/x/tools/cmd/present/static/custom.js
+-@@ -0,0 +1,18 @@
+-+// Write a string to the document which represents which slide we are on
+-+// and how many slides there are total.
+-+//
+-+// 'slideEls' is from handleDomLoaded() in 'slides.js'
+-+
+-+$(
+-+    function($) {
+-+	try {
+-+	    var max = slideEls.length;
+-+	    slideEls.forEach(function(elem, idx) {
+-+		$("span.slideNum", elem).text((idx+1) + "/" + max);
+-+		console.log("updated #" + (idx+1));
+-+	    });
+-+	} catch (e) {
+-+	    alert("Something failed...");
+-+	}
+-+    }
+-+);
+-diff --git a/src/golang.org/x/tools/cmd/present/static/slides.js b/src/golang.org/x/tools/cmd/present/static/slides.js
+-index f055bb50..b8d887c3 100644
+---- a/src/golang.org/x/tools/cmd/present/static/slides.js
+-+++ b/src/golang.org/x/tools/cmd/present/static/slides.js
+-@@ -9,6 +9,7 @@ var SLIDE_CLASSES = ['far-past', 'past', 'current', 'next', 'far-next'];
+- var PM_TOUCH_SENSITIVITY = 15;
+- 
+- var curSlide;
+-+var slideEls;
+- 
+- /* ---------------------------------------------------------------------- */
+- /* classList polyfill by Eli Grey
+-@@ -507,16 +508,18 @@ function initialize() {
+-   if (window['_DCL']) {
+-     handleDomLoaded();
+-   } else {
+--    document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
+-+    //document.addEventListener('DOMContentLoaded', handleDomLoaded, false);
+-+    $(handleDomLoaded);
+-   }
+- }
+- 
+- // If ?debug exists then load the script relative instead of absolute
+- if (!window['_DEBUG'] && document.location.href.indexOf('?debug') !== -1) {
+--  document.addEventListener('DOMContentLoaded', function() {
+-+  //document.addEventListener('DOMContentLoaded', function() {
+-+  $(function() {
+-     // Avoid missing the DomContentLoaded event
+-     window['_DCL'] = true
+--  }, false);
+-+  });
+- 
+-   window['_DEBUG'] = true;
+-   var script = document.createElement('script');
 -diff --git a/src/golang.org/x/tools/cmd/present/static/styles.css b/src/golang.org/x/tools/cmd/present/static/styles.css
--index d877682b..7c4d0f37 100644
+-index d877682b..1d63ea90 100644
 ---- a/src/golang.org/x/tools/cmd/present/static/styles.css
 -+++ b/src/golang.org/x/tools/cmd/present/static/styles.css
 -@@ -265,6 +265,13 @@
@@ -15,13 +187,26 @@ index 14b8051..e69de29 100644
 -+.slideNum {
 -+    font-size: 0.75em;
 -+    position: absolute;
--+    bottom: 0px;
+-+    top: 0px;
 -+    right: 4px;
 -+}
 -+
 - b {
 -   font-weight: 600;
 - }
+-@@ -310,10 +317,10 @@ h1 {
+- h2 {
+-   font-size: 45px;
+-   line-height: 45px;
+--
+-+/*
+-   position: absolute;
+-   bottom: 150px;
+--
+-+*/
+-   padding: 0;
+-   margin: 0;
+-   padding-right: 40px;
 -@@ -382,7 +389,8 @@ code {
 -   font-size: 95%;
 -   font-family: 'Droid Sans Mono', 'Courier New', monospace;
@@ -45,74 +230,150 @@ index 14b8051..e69de29 100644
 -   {{range .Elem}}{{elem $.Template .}}{{end}}
 - {{end}}
 - 
+-diff --git a/src/golang.org/x/tools/cmd/present/templates/article.tmpl b/src/golang.org/x/tools/cmd/present/templates/article.tmpl
+-index 0a223c63..7c27467f 100644
+---- a/src/golang.org/x/tools/cmd/present/templates/article.tmpl
+-+++ b/src/golang.org/x/tools/cmd/present/templates/article.tmpl
+-@@ -58,6 +58,7 @@
+-     </div>
+- 
+-     {{if .PlayEnabled}}
+-+    <script src='/jquery.js'></script>
+-     <script src='/play.js'></script>
+-     {{end}}
+- 
 -diff --git a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
--index 878440b6..af789d71 100644
+-index 878440b6..9d1ffc72 100644
 ---- a/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
 -+++ b/src/golang.org/x/tools/cmd/present/templates/slides.tmpl
--@@ -53,15 +53,19 @@
--         {{end}}
--       </article>
+-@@ -9,7 +9,9 @@
+-     <script>
+-       var notesEnabled = {{.NotesEnabled}};
+-     </script>
+-+    <script src='/jquery.js'></script>
+-     <script src='/static/slides.js'></script>
+-+    <script src='/static/custom.js'></script>
 - 
--+  {{$numSlides := len .Sections}}
+-     {{if .NotesEnabled}}
+-     <script>
+-@@ -55,14 +57,26 @@
+- 
 -   {{range $i, $s := .Sections}}
 -   <!-- start of slide {{$s.Number}} -->
--       <article>
--       {{if $s.Elem}}
+--      <article>
+--      {{if $s.Elem}}
 --        <h3>{{$s.Title}}</h3>
--+        <h2>{{style $s.Title}}</h2>
--         {{range $s.Elem}}{{elem $.Template .}}{{end}}
+--        {{range $s.Elem}}{{elem $.Template .}}{{end}}
+-+      {{$len := len $s.Number}}
+-+      {{if eq $len 1}}
+-+	<article>
+-+	  <h2>{{.FormattedNumber}} {{style $s.Title}}</h2>
+-+	  <span class="slideNum">
+-+	  </span>
+-+	</article>
+-+	{{range $s.Elem}}
+-+	<article>
+-+	  <span class="slideNum">
+-+	  </span>
+-+	{{elem $.Template .}}
+-+	</article>
+-+	{{end}}
 -       {{else}}
 --        <h2>{{$s.Title}}</h2>
--+        <h2>{{style $s.Title}}</h2>
--       {{end}}
--+      <span class="slideNum">
--+	{{$i}}/{{$numSlides}}
--+      </span>
+--      {{end}}
+-+        <h2>(FIXME) {{.FormattedNumber}} {{style $s.Title}}</h2>
+-+	<span class="slideNum">
+-+	</span>
 -       </article>
+-+      {{end}}
 -   <!-- end of slide {{$i}} -->
 -   {{end}}{{/* of Slide block */}}
-Submodule src/golang.org/x/tools cbb995d0..bd8f944c:
-diff --git a/src/golang.org/x/tools/cmd/present/play.go b/src/golang.org/x/tools/cmd/present/play.go
-index 831b99f4..005483ff 100644
---- a/src/golang.org/x/tools/cmd/present/play.go
-+++ b/src/golang.org/x/tools/cmd/present/play.go
-@@ -15,7 +15,10 @@ import (
- 	"golang.org/x/tools/godoc/static"
+- 
+Submodule src/golang.org/x/tools cbb995d0..64f85da4:
+diff --git a/src/golang.org/x/tools/cmd/present/local.go b/src/golang.org/x/tools/cmd/present/local.go
+index 260cacbb..23c4e345 100644
+--- a/src/golang.org/x/tools/cmd/present/local.go
++++ b/src/golang.org/x/tools/cmd/present/local.go
+@@ -7,16 +7,21 @@
+ package main
+ 
+ import (
++	"bytes"
+ 	"flag"
+ 	"fmt"
+ 	"go/build"
++	"io/ioutil"
+ 	"log"
+ 	"net"
+ 	"net/http"
+ 	"net/url"
+ 	"os"
++	"path/filepath"
+ 	"strings"
++	"time"
+ 
++	"golang.org/x/tools/godoc/static"
+ 	"golang.org/x/tools/present"
  )
  
--var scripts = []string{"jquery.js", "jquery-ui.js", "playground.js", "play.js"}
-+var scripts = []string{
-+//    "jquery.js",
-+    "jquery-ui.js", "playground.js", "play.js"
-+}
+@@ -29,6 +34,31 @@ var (
+ 	nativeClient = flag.Bool("nacl", false, "use Native Client environment playground (prevents non-Go code execution)")
+ )
  
- // playScript registers an HTTP handler at /play.js that serves all the
- // scripts specified by the variable above, and appends a line that
-@@ -40,4 +43,24 @@ func playScript(root, transport string) {
- 		w.Header().Set("Content-type", "application/javascript")
- 		http.ServeContent(w, r, "", modTime, bytes.NewReader(b))
- 	})
-+
++func jQueryHandler(root string) {
 +	// jQuery is handled separately because /slides.js needs it as
 +	// well, but we want to pull it from godoc instead of our own
 +	// /static/ directory.
 +	var jq bytes.Buffer
 +	p := "jquery.js"
 +	if s, ok := static.Files[p]; ok {
++		// log.Printf("Using cached value")
 +		jq.WriteString(s)
 +	} else {
++		// log.Printf("Opening %s/static/%s", root, p)
 +		b, err := ioutil.ReadFile(filepath.Join(root, "static", p))
 +		if err != nil {
 +			panic(err)
 +		}
 +		jq.Write(b)
 +	}
-+	jq := buf.Bytes()
++	buf := jq.Bytes()
++	modTime := time.Now()
 +	http.HandleFunc("/jquery.js", func(w http.ResponseWriter, r *http.Request) {
 +		w.Header().Set("Content-type", "application/javascript")
-+		http.ServeContent(w, r, "", modTime, bytes.NewReader(jq))
++		http.ServeContent(w, r, "", modTime, bytes.NewReader(buf))
 +	})
- }
++}
++
+ func main() {
+ 	flag.BoolVar(&present.PlayEnabled, "play", true, "enable playground (permit execution of arbitrary user code)")
+ 	flag.BoolVar(&present.NotesEnabled, "notes", false, "enable presenter notes (press 'N' from the browser to display them)")
+@@ -79,6 +109,7 @@ func main() {
+ 
+ 	initPlayground(*basePath, origin)
+ 	http.Handle("/static/", http.FileServer(http.Dir(*basePath)))
++	jQueryHandler(*basePath)
+ 
+ 	if !ln.Addr().(*net.TCPAddr).IP.IsLoopback() &&
+ 		present.PlayEnabled && !*nativeClient {
+diff --git a/src/golang.org/x/tools/cmd/present/play.go b/src/golang.org/x/tools/cmd/present/play.go
+index 831b99f4..bce5cd13 100644
+--- a/src/golang.org/x/tools/cmd/present/play.go
++++ b/src/golang.org/x/tools/cmd/present/play.go
+@@ -15,7 +15,12 @@ import (
+ 	"golang.org/x/tools/godoc/static"
+ )
+ 
+-var scripts = []string{"jquery.js", "jquery-ui.js", "playground.js", "play.js"}
++// jquery.js moved to separate handler in 'local.go'
++var scripts = []string{
++    "jquery-ui.js",
++    "playground.js",
++    "play.js",
++}
+ 
+ // playScript registers an HTTP handler at /play.js that serves all the
+ // scripts specified by the variable above, and appends a line that
 diff --git a/src/golang.org/x/tools/cmd/present/static/custom.js b/src/golang.org/x/tools/cmd/present/static/custom.js
 new file mode 100644
 index 00000000..388e83b4
@@ -283,4 +544,19 @@ index 878440b6..9d1ffc72 100644
 +      {{end}}
    <!-- end of slide {{$i}} -->
    {{end}}{{/* of Slide block */}}
+ 
+diff --git a/test.slide b/test.slide
+index 35dd37bf..1a04db61 100644
+--- a/test.slide
++++ b/test.slide
+@@ -13,7 +13,10 @@ http://www.eeconsulting.net/
+ 
+ * Go Overview (Chapter Title)
+ 
++- You probably don't want this text here (notice there's no slide title?) so DON'T DO THIS!
+ - bullet here
++- another bullet
++- Instead, the top-level chapter title (line starting with "*") should only be followed by a sublevel title (line starting with "**") to act as a new slide title.
+ 
+ ** Slide title (first slide)
  
