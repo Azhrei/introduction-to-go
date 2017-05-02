@@ -29,8 +29,7 @@ A second patch is planned that modifies the tool so that slide
 titles are automatically numbered, but this gets in the way for
 "continuation slides", which should not be assigned a new number.
 I plan to come up with a way to correct for this (new syntax add
-to the Title tag?) but until I do, this patch is NOT recommended
-(although the `present2.patch` file is provided).
+to the Title tag?) but until I do, this patch is not provided.
 
 I really want the second patch to work as it would easily allow a table
 of contents at the beginning of the slide deck built automatically by
