@@ -1,0 +1,4 @@
+[submodule "present"]
+    path = src/golang.org/x/tools
+    url = https://golang.org/x/tools/present.git
+    ignore = all
